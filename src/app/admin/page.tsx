@@ -1,4 +1,4 @@
-const Page = () => {
+const Page = async () => {
   return <div>Ini Halaman Admin</div>
 }
 

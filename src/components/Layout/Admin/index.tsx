@@ -95,7 +95,7 @@ const AdminLayout = ({ children }: IProps) => {
               borderRadius: borderRadiusLG,
             }}
           >
-            Bill is a cat.
+            {children}
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
