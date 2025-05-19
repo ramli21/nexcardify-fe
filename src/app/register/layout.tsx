@@ -8,9 +8,7 @@ interface IProps {
 export default function RegisterLayout({ children }: IProps) {
   return (
     <>
-      <Header />
       <main>{children}</main>
-      <Footer />
     </>
   )
 }

@@ -84,11 +84,8 @@ const Header: React.FC = () => {
           </nav>
           <div className="flex items-center gap-4">
             <Link
-              href="#"
+              href="/login"
               className="hidden lg:block bg-primary text-white hover:bg-primary/15 hover:text-primary px-16 py-5 rounded-full text-lg font-medium"
-              onClick={() => {
-                setIsSignInOpen(true);
-              }}
             >
               Sign In
             </Link>
@@ -113,15 +110,12 @@ const Header: React.FC = () => {
               </div>
             )}
             <Link
-              href="#"
+              href="/register"
               className="hidden lg:block bg-primary/15 hover:bg-primary text-primary hover:text-white px-16 py-5 rounded-full text-lg font-medium"
-              onClick={() => {
-                setIsSignUpOpen(true);
-              }}
             >
-              Sign Up
+              Sign Up Free
             </Link>
-            {isSignUpOpen && (
+            {/* {isSignUpOpen && (
               <div className="fixed top-0 left-0 w-full h-full bg-black/50 flex items-center justify-center z-50">
                 <div
                   ref={signUpRef}
@@ -140,7 +134,7 @@ const Header: React.FC = () => {
                   <SignUp />
                 </div>
               </div>
-            )}
+            )} */}
             <button
               onClick={() => setNavbarOpen(!navbarOpen)}
               className="block lg:hidden p-2 rounded-lg"
@@ -178,24 +172,16 @@ const Header: React.FC = () => {
             ))}
             <div className="mt-4 flex flex-col space-y-4 w-full">
               <Link
-                href="#"
+                href="/login"
                 className="bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white"
-                onClick={() => {
-                  setIsSignInOpen(true);
-                  setNavbarOpen(false);
-                }}
               >
                 Sign In
               </Link>
               <Link
-                href="#"
+                href="/register"
                 className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700"
-                onClick={() => {
-                  setIsSignUpOpen(true);
-                  setNavbarOpen(false);
-                }}
               >
-                Sign Up
+                Sign Up Free
               </Link>
             </div>
           </nav>
