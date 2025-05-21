@@ -3,71 +3,73 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function ContactPage() {
+export default function ProfessionalInfoPage() {
   const router = useRouter();
 
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [linkedin, setLinkedin] = useState('');
+  const [company, setCompany] = useState('');
+  const [address, setAddress] = useState('');
+  const [website, setWebsite] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!email && !phone && !linkedin) {
-      alert('Please provide at least one contact method.');
-      return;
-    }
+    // if (!company && !address && !website) {
+    //   alert('Please provide at least one field.');
+    //   return;
+    // }
 
-    // Redirect ke halaman lain
+    // Optional: cek di console
+    console.log({ company, address, website });
+
     router.push('/theme');
   };
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-gray-100 px-4">
+    <section className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
       <div className="mb-4">
         <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
       </div>
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
         <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
+            <label htmlFor="company" className="block text-sm font-medium text-gray-700">
+              Company
             </label>
             <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
+              id="company"
+              type="text"
+              value={company}
+              onChange={e => setCompany(e.target.value)}
               className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="example@email.com"
+              placeholder="Company Name"
             />
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Phone Number
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
+              Address
             </label>
             <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={e => setPhone(e.target.value)}
+              id="address"
+              type="text"
+              value={address}
+              onChange={e => setAddress(e.target.value)}
               className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="+62 812-3456-7890"
+              placeholder="Company Address"
             />
           </div>
 
           <div>
-            <label htmlFor="linkedin" className="block text-sm font-medium text-gray-700">
-              LinkedIn Profile
+            <label htmlFor="website" className="block text-sm font-medium text-gray-700">
+              Link Website
             </label>
             <input
-              id="linkedin"
+              id="website"
               type="url"
-              value={linkedin}
-              onChange={e => setLinkedin(e.target.value)}
+              value={website}
+              onChange={e => setWebsite(e.target.value)}
               className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="https://linkedin.com/in/yourprofile"
+              placeholder="https://yourcompany.com"
             />
           </div>
 

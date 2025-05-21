@@ -4,16 +4,18 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const templates = [
-  { id: 'template1', name: 'Classic Blue', description: 'Simple and elegant blue theme' },
-  { id: 'template2', name: 'Modern Minimal', description: 'Clean and minimal look' },
-  { id: 'template3', name: 'Creative Splash', description: 'Colorful and artistic' },
-  { id: 'template4', name: 'Professional Grey', description: 'Formal and business style' },
-  { id: 'template5', name: 'Elegant Gold', description: 'Luxurious gold accents' },
-  { id: 'template6', name: 'Bold Red', description: 'Strong and eye-catching red theme' },
-  { id: 'template7', name: 'Nature Green', description: 'Fresh and natural green tones' },
-  { id: 'template8', name: 'Tech Blue', description: 'Modern tech-inspired blue palette' },
-  { id: 'template9', name: 'Pastel Pink', description: 'Soft and gentle pastel colors' },
-  { id: 'template10', name: 'Dark Mode', description: 'Sleek dark background design' },
+  { id: 'template1', image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg' },
+  { id: 'template2', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9358/1_85824037_image_p1_common.jpg' },
+  { id: 'template3', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9244/1_98102026_image_p1_common.jpg' },
+  { id: 'template4', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9148/1_11609006_image_p1_common.jpg' },
+  { id: 'template5', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9112/1_64732145_image_p1_common.jpg' },
+  { id: 'template6', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9115/1_56233723_image_p1_common.jpg' },
+  { id: 'template7', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9090/1_35637081_image_p1_common.jpg' },
+  { id: 'template8', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9087/1_15217929_image_p1_common.jpg' },
+  { id: 'template9', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9071/1_78148047_image_p1_common.jpg' },
+  { id: 'template10', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9053/1_62817998_image_p1_common.jpg' },
+  { id: 'template11', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9040/1_80294840_image_p1_common.jpg' },
+  { id: 'template12', image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9044/1_54183322_image_p1_common.jpg' },
 ];
 
 export default function TemplateSelectionPage() {
@@ -29,7 +31,8 @@ export default function TemplateSelectionPage() {
       alert('Please select a template first.');
       return;
     }
-    router.push(`/dashboard`);
+
+    router.push('/preview');
   };
 
   return (
@@ -37,19 +40,21 @@ export default function TemplateSelectionPage() {
       <div className="mb-6">
         <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
       </div>
-      <h1 className="text-2xl font-bold mb-8">Choose Your Business Card Template</h1>
+      <h1 className="text-2xl font-bold mb-8 text-center">Choose Your Business Card Template</h1>
 
-      {/* Scrollable container */}
-      <div className="max-w-4xl w-full h-[400px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 gap-6">
+      <div className="max-w-5xl w-full h-[900px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-2">
         {templates.map(template => (
           <div
             key={template.id}
             onClick={() => handleSelect(template.id)}
-            className={`cursor-pointer border rounded-xl p-6 shadow-md hover:shadow-xl transition
-              ${selectedTemplate === template.id ? 'border-purple-600 bg-purple-50' : 'border-gray-300 bg-white'}`}
+            className={`cursor-pointer border-4 rounded-2xl overflow-hidden transition-shadow duration-200 
+              ${selectedTemplate === template.id ? 'border-purple-600 shadow-xl' : 'border-transparent shadow-md'}`}
           >
-            <h2 className="text-lg font-semibold mb-2">{template.name}</h2>
-            <p className="text-sm text-gray-600">{template.description}</p>
+            <img
+              src={template.image}
+              alt={template.id}
+              className="w-full h-56 object-cover hover:scale-105 transition-transform duration-300"
+            />
           </div>
         ))}
       </div>

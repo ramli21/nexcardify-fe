@@ -5,10 +5,12 @@ interface IProps {
   children: React.ReactNode
 }
 
-export default function AddProfileLayout({ children }: IProps) {
+export default function TermOfServiceLayout({ children }: IProps) {
   return (
     <>
+      <Header />
       <main>{children}</main>
+      <Footer />
     </>
   )
 }

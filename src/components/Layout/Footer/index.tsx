@@ -5,6 +5,8 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { headerData } from "../Header/Navigation/menuData";
 
 const footer = () => {
+  const currentYear = new Date().getFullYear();
+  
   return (
     <footer className="bg-deepSlate py-10">
       <div className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md px-4">
@@ -97,12 +99,16 @@ const footer = () => {
         </div>
 
         <div className='mt-10 lg:flex items-center justify-between'>
-          <h4 className='text-black/50 text-sm text-center lg:text-start font-normal'>@2025 Agency. All Rights Reserved by <Link href="https://getnextjstemplates.com/" target="_blank" className="hover:text-primary"> GetNextJsTemplates.com</Link></h4>
+          <h4 className="text-black/50 text-sm text-center lg:text-start font-normal">
+            ©{currentYear}. All Rights Reserved by{' '}
+            <Link href="https://nexcardify.com/" target="_blank" rel="noopener noreferrer" className="hover:text-primary">
+            nexcardify.com
+          </Link>
+          </h4>
           <div className="flex gap-5 mt-5 lg:mt-0 justify-center lg:justify-start">
-            <Link href="/" className='text-black/50 text-sm font-normal hover:text-primary'>Privacy policy</Link>
-            <Link href="/" className='text-black/50 text-sm font-normal hover:text-primary'>Terms & conditions</Link>
+            <Link href="/privacy-policy" className='text-black/50 text-sm font-normal hover:text-primary'>Privacy policy</Link>
+            <Link href="/terms-of-service" className='text-black/50 text-sm font-normal hover:text-primary'>Terms & conditions</Link>
           </div>
-          <h4 className='text-black/50 text-sm text-center lg:text-start font-normal'>Distributed by <Link href="https://themewagon.com/" target="_blank" className="hover:text-primary"> ThemeWagon</Link></h4>
         </div>
       </div>
     </footer>

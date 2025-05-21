@@ -1,16 +1,14 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
-  DesktopOutlined,
-  FileOutlined,
-  LogoutOutlined,
   PieChartOutlined,
-  RetweetOutlined,
-  TeamOutlined,
+  IdcardOutlined,
+  GlobalOutlined,
   UserOutlined,
 } from '@ant-design/icons'
-import { Button, MenuProps } from 'antd'
-import { Breadcrumb, Dropdown, Layout, Menu, Space, theme } from 'antd'
+import { MenuProps } from 'antd'
+import { Breadcrumb, Layout, Menu, theme } from 'antd'
+import { useRouter, usePathname } from 'next/navigation'
 import HeaderLayout from './header'
 
 const { Header, Content, Footer, Sider } = Layout
@@ -31,19 +29,26 @@ function getItem(
   } as MenuItem
 }
 
+// Mapping key ke path route
+const routeMap: Record<string, string> = {
+  '1': '/dashboard',
+  '2': '/mycard',
+  '3': '/mysite',
+  '4': '/profile',
+}
+
+const pathToKeyMap: Record<string, string> = {
+  '/dashboard': '1',
+  '/mycard': '2',
+  '/mysite': '3',
+  '/profile': '4',
+}
+
 const items: MenuItem[] = [
-  getItem('Option 1', '1', <PieChartOutlined />),
-  getItem('Option 2', '2', <DesktopOutlined />),
-  getItem('User', 'sub1', <UserOutlined />, [
-    getItem('Tom', '3'),
-    getItem('Bill', '4'),
-    getItem('Alex', '5'),
-  ]),
-  getItem('Team', 'sub2', <TeamOutlined />, [
-    getItem('Team 1', '6'),
-    getItem('Team 2', '8'),
-  ]),
-  getItem('Files', '9', <FileOutlined />),
+  getItem('Dashboard', '1', <PieChartOutlined />),
+  getItem('MyCard', '2', <IdcardOutlined />),
+  getItem('MySite', '3', <GlobalOutlined />),
+  getItem('Profile', '4', <UserOutlined />),
 ]
 
 interface IProps {
@@ -52,9 +57,23 @@ interface IProps {
 
 const AdminLayout = ({ children }: IProps) => {
   const [collapsed, setCollapsed] = useState(false)
+  const router = useRouter()
+  const pathname = usePathname() // ambil current route
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken()
+
+  // Handler menu click navigasi
+  const onMenuClick: MenuProps['onClick'] = ({ key }) => {
+    const path = routeMap[key]
+    if (path) {
+      router.push(path)
+    }
+  }
+
+  // Tentukan menu aktif dari route
+  const selectedKey = pathToKeyMap[pathname] || '1' // default 1
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -63,14 +82,20 @@ const AdminLayout = ({ children }: IProps) => {
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
       >
-        <div className="text-20 py-5 text-white text-center text-bold">
-          NexCard
+        <div className="py-5 text-center">
+          <img
+            src="/images/logo/NexCardify.png"
+            alt="nexcardify Logo"
+            className="mx-auto"
+            style={{ height: 40 }}
+          />
         </div>
         <Menu
           theme="dark"
-          defaultSelectedKeys={['1']}
+          selectedKeys={[selectedKey]} // set menu aktif disini
           mode="inline"
           items={items}
+          onClick={onMenuClick}
         />
       </Sider>
       <Layout>
@@ -99,7 +124,7 @@ const AdminLayout = ({ children }: IProps) => {
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
-          Ant Design ©{new Date().getFullYear()} Created by Ant UED
+          ©{new Date().getFullYear()} Created by nexcardify.com
         </Footer>
       </Layout>
     </Layout>

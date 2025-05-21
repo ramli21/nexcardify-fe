@@ -5,7 +5,7 @@ interface IProps {
   children: React.ReactNode
 }
 
-export default function AddContactLayout({ children }: IProps) {
+export default function PreviewLayout({ children }: IProps) {
   return (
     <>
       <main>{children}</main>

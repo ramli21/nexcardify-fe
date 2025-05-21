@@ -8,7 +8,7 @@ export default function LoginPage() {
     
     e.preventDefault();
 
-    router.push('/add-profiles');
+    router.push('/dashboard');
   };
 
   return (
@@ -25,14 +25,14 @@ export default function LoginPage() {
       <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
         <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
-              Username
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
             </label>
             <input
-              id="username"
+              id="email"
               type="text"
               className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your username"
+              placeholder="Enter your email"
             />
           </div>
 
@@ -56,7 +56,7 @@ export default function LoginPage() {
           </button>
         </form>
 
-        <div className="my-6 flex items-center">
+        {/* <div className="my-6 flex items-center">
           <hr className="flex-grow border-gray-300" />
           <span className="mx-2 text-gray-500 text-sm">OR</span>
           <hr className="flex-grow border-gray-300" />
@@ -68,7 +68,7 @@ export default function LoginPage() {
         >
           <img src="/images/logo/google.png" alt="Google" className="w-5 h-5" />
           <span className="text-sm text-gray-700 font-medium">Login with Google</span>
-        </button>
+        </button> */}
 
         <p className="text-center text-sm text-gray-500 mt-6">
           Don't have an account?{" "}

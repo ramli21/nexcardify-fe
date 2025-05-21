@@ -11,9 +11,9 @@ export default async function RegisterLayout({ children }: IProps) {
   const session = await getServerSession(options)
 
   // if the user has not logged in
-  if (!session) {
-    redirect('/')
-  }
+  // if (!session) {
+  //   redirect('/')
+  // }
 
   return (
     <AdminLayout>

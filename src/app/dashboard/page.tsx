@@ -1,34 +1,44 @@
+'use client';
+
+import React from 'react';
+import { Card, Col, Row, Statistic } from 'antd';
+import { EyeOutlined, ClickOutlined } from '@ant-design/icons';
+
 export default async function Page({
   params,
 }: {
   params: Promise<{ slug: string }>
 }) {
-  return (
-    <section className="mt-20 w-100 flex justify-center items-center h-screen">
-      {/* <div className="flex flex-col rounded-2xl w-[500px] bg-[#ffffff] shadow-xl">
-        <figure className="flex justify-center items-center rounded-2xl">
-          <img
-            src="https://tailwind-generator.b-cdn.net/images/card-generator/tailwind-card-generator-card-preview.png"
-            alt="Card Preview"
-            className="rounded-t-2xl"
-          />
-        </figure>
 
-        <div className="flex flex-col p-8">
-          <div className="text-2xl font-bold   text-[#374151] pb-6">
-            Generator
-          </div>
-          <div className=" text-lg   text-[#374151]">
-            Leverage a graphical editor to create, design and customize
-            beautiful web components.
-          </div>
-          <div className="flex justify-end pt-6">
-            <button className="bg-[#7e22ce] text-[#ffffff] w-full font-bold text-base  p-3 rounded-lg hover:bg-purple-800 active:scale-95 transition-transform transform">
-              Try it out!
-            </button>
-          </div>
-        </div>
-      </div> */}
-    </section>
-  )
+  // Data contoh, nanti bisa diganti dari API / state
+  const totalViews = 1234;
+  const totalClicks = 567;
+
+  return (
+    <div style={{ padding: 24 }}>
+      <Row gutter={16}>
+        <Col xs={24} sm={12}>
+          <Card>
+            <Statistic
+              title="Total Views"
+              value={totalViews}
+              prefix={<EyeOutlined />}
+              valueStyle={{ color: '#3f8600' }}
+            />
+          </Card>
+        </Col>
+
+        <Col xs={24} sm={12}>
+          <Card>
+            <Statistic
+              title="Total Clicks"
+              value={totalClicks}
+              prefix={<ClickOutlined />} // Icon custom, bisa ganti jika ingin
+              valueStyle={{ color: '#cf1322' }}
+            />
+          </Card>
+        </Col>
+      </Row>
+    </div>
+  );
 }
