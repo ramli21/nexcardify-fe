@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Row, Col, Image, Card, Button, Typography } from 'antd';
+
+const { Title } = Typography;
 
 const templates = [
   { id: 'template1', image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg' },
@@ -32,39 +35,77 @@ export default function TemplateSelectionPage() {
       return;
     }
 
-    router.push('/preview');
+    router.push('/dashboard');
   };
 
   return (
-    <section className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
-      <div className="mb-6">
-        <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
+    <div style={{ padding: 24, minHeight: '100vh', backgroundColor: '#f0f2f5' }}>
+      <div style={{ textAlign: 'center', marginBottom: 32 }}>
+        <img src="/images/logo/NexCardify.png" alt="Logo" style={{ height: 50 }} />
+        <Title level={3} style={{ marginTop: 16 }}>Choose Your Business Card Template</Title>
       </div>
-      <h1 className="text-2xl font-bold mb-8 text-center">Choose Your Business Card Template</h1>
 
-      <div className="max-w-5xl w-full h-[900px] overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 px-2">
-        {templates.map(template => (
-          <div
-            key={template.id}
-            onClick={() => handleSelect(template.id)}
-            className={`cursor-pointer border-4 rounded-2xl overflow-hidden transition-shadow duration-200 
-              ${selectedTemplate === template.id ? 'border-purple-600 shadow-xl' : 'border-transparent shadow-md'}`}
-          >
-            <img
-              src={template.image}
-              alt={template.id}
-              className="w-full h-56 object-cover hover:scale-105 transition-transform duration-300"
-            />
+      <Row gutter={24}>
+        <Col xs={24} md={4}>
+          <div style={{ maxHeight: '65vh', overflowY: 'auto', paddingRight: 8 }}>
+            {templates.map(template => (
+              <Card
+                key={template.id}
+                hoverable
+                onClick={() => handleSelect(template.id)}
+                bodyStyle={{ padding: 0 }} // hilangkan padding default Card agar image benar-benar penuh
+                style={{
+                  marginBottom: 16,
+                  border: selectedTemplate === template.id ? '2px solid #722ed1' : '1px solid #f0f0f0',
+                  overflow: 'hidden',
+                  borderRadius: 8,
+                }}
+                cover={
+                  <div style={{ height: 120, overflow: 'hidden' }}>
+                    <Image
+                      src={template.image}
+                      alt={template.id}
+                      width="100%"
+                      height="100%"
+                      style={{ objectFit: 'cover' }}
+                      preview={false}
+                    />
+                  </div>
+                }
+              />
+            ))}
           </div>
-        ))}
-      </div>
+        </Col>
+        <Col xs={24} md={20}>
+          <Card
+            title=""
+            bordered={false}
+            style={{ height: '100%', minHeight: '60vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+          >
+            {selectedTemplate ? (
+              <Image
+                src={templates.find(t => t.id === selectedTemplate)?.image || ''}
+                alt="Preview"
+                height={300}
+                style={{ objectFit: 'contain' }}
+              />
+            ) : (
+              <p>Please select a template to preview.</p>
+            )}
+          </Card>
+        </Col>
+      </Row>
 
-      <button
-        onClick={handleContinue}
-        className="mt-10 bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
-      >
-        Continue
-      </button>
-    </section>
+      <div style={{ textAlign: 'center', marginTop: 32 }}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={handleContinue}
+          disabled={!selectedTemplate}
+        >
+          Continue
+        </Button>
+      </div>
+    </div>
   );
 }

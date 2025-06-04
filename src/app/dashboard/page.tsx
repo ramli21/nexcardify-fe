@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { BarChart2, Eye, MousePointerClick } from "lucide-react";
 import { Line } from 'react-chartjs-2';
 import {
@@ -10,8 +11,11 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Row, Col, Card, Typography, Space } from 'antd';
 
 ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend);
+
+const { Title, Text } = Typography;
 
 const chartData = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -39,71 +43,75 @@ const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    tooltip: {
-      mode: 'index' as const,
-      intersect: false,
-    },
+    legend: { position: 'top' as const },
+    tooltip: { mode: 'index' as const, intersect: false },
   },
-  scales: {
-    y: {
-      beginAtZero: true,
-    },
-  },
+  scales: { y: { beginAtZero: true } },
 };
 
 export default function CardStatsPage() {
   return (
-    <div className="min-h-screen">
-      <div className="flex justify-between items-center mb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800">Hello, Zaenal 👋</h1>
-          <p className="text-gray-500">Monitor your digital business card performance today.</p>
-        </div>
-        <span className="text-sm text-gray-500">May 22, 2025</span>
-      </div>
+    <div style={{ padding: 24 }}>
+      <Row justify="space-between" align="middle" style={{ marginBottom: 32 }}>
+        <Col>
+          <Title level={3}>Hello, Zaenal 👋</Title>
+          <Text type="secondary">Monitor your digital business card performance today.</Text>
+        </Col>
+        <Col>
+          <Text type="secondary">May 22, 2025</Text>
+        </Col>
+      </Row>
 
-      <div className="grid grid-cols-3 gap-4 mb-8">
-        <div className="bg-white p-6 rounded-xl shadow flex items-center gap-4">
-          <div className="p-3 bg-purple-100 rounded-full text-purple-700">
-            <Eye className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-gray-500 text-sm">Total Views</p>
-            <p className="text-xl font-semibold text-gray-800">1,254</p>
-            <p className="text-green-500 text-xs">+12% compared to last week</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow flex items-center gap-4">
-          <div className="p-3 bg-blue-100 rounded-full text-blue-700">
-            <MousePointerClick className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-gray-500 text-sm">Total Clicks</p>
-            <p className="text-xl font-semibold text-gray-800">678</p>
-            <p className="text-red-500 text-xs">-5% compared to last week</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow flex items-center gap-4">
-          <div className="p-3 bg-green-100 rounded-full text-green-700">
-            <BarChart2 className="w-6 h-6" />
-          </div>
-          <div>
-            <p className="text-gray-500 text-sm">Conversion Rate</p>
-            <p className="text-xl font-semibold text-gray-800">54%</p>
-            <p className="text-green-500 text-xs">+7% increase</p>
-          </div>
-        </div>
-      </div>
+      <Row gutter={[16, 16]} style={{ marginBottom: 32 }}>
+        <Col xs={24} md={8}>
+          <Card>
+            <Space align="start">
+              <div style={{ padding: 12, backgroundColor: '#f3e8ff', borderRadius: 12 }}>
+                <Eye size={24} color="#7e22ce" />
+              </div>
+              <div>
+                <Text type="secondary">Total Views</Text>
+                <Title level={4} style={{ margin: 0 }}>1,254</Title>
+                <Text type="success" style={{ fontSize: 12 }}>+12% compared to last week</Text>
+              </div>
+            </Space>
+          </Card>
+        </Col>
+        <Col xs={24} md={8}>
+          <Card>
+            <Space align="start">
+              <div style={{ padding: 12, backgroundColor: '#dbeafe', borderRadius: 12 }}>
+                <MousePointerClick size={24} color="#2563eb" />
+              </div>
+              <div>
+                <Text type="secondary">Total Clicks</Text>
+                <Title level={4} style={{ margin: 0 }}>678</Title>
+                <Text type="danger" style={{ fontSize: 12 }}>-5% compared to last week</Text>
+              </div>
+            </Space>
+          </Card>
+        </Col>
+        <Col xs={24} md={8}>
+          <Card>
+            <Space align="start">
+              <div style={{ padding: 12, backgroundColor: '#dcfce7', borderRadius: 12 }}>
+                <BarChart2 size={24} color="#16a34a" />
+              </div>
+              <div>
+                <Text type="secondary">Conversion Rate</Text>
+                <Title level={4} style={{ margin: 0 }}>54%</Title>
+                <Text type="success" style={{ fontSize: 12 }}>+7% increase</Text>
+              </div>
+            </Space>
+          </Card>
+        </Col>
+      </Row>
 
-      <div className="bg-white p-6 rounded-xl shadow mb-8">
-        <h2 className="text-lg font-semibold text-gray-700 mb-4">Interaction Chart</h2>
-        <div className="h-64">
+      <Card title="Interaction Chart">
+        <div style={{ height: 320 }}>
           <Line data={chartData} options={chartOptions} />
         </div>
-      </div>
+      </Card>
     </div>
   );
 }

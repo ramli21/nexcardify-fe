@@ -2,139 +2,141 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Form, Input, Button, Typography, Card } from 'antd';
+
+const { Title } = Typography;
 
 export default function PersonalInfoPage() {
-  
+  const router = useRouter();
+  const [form] = Form.useForm();
+
   const [selectedField, setSelectedField] = useState('');
   const [otherField, setOtherField] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const router = useRouter();
 
   const fields = [
-    "Software Engineer",
-    "UI/UX Designer",
-    "Product Manager",
-    "Digital Marketing",
-    "Customer Support",
-    "Data Analyst",
-    "Content Writer",
-    "Finance",
-    "Human Resources",
-    "Sales",
-    "Other"
+    'Software Engineer',
+    'UI/UX Designer',
+    'Product Manager',
+    'Digital Marketing',
+    'Customer Support',
+    'Data Analyst',
+    'Content Writer',
+    'Finance',
+    'Human Resources',
+    'Sales',
+    'Other',
   ];
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
+  const handleSubmit = (values: any) => {
     const finalField = selectedField === 'Other' ? otherField : selectedField;
 
-    console.log('Full Name:', (document.getElementById('name') as HTMLInputElement).value);
+    if (!finalField || (selectedField === 'Other' && !otherField)) {
+      return form.setFields([
+        {
+          name: 'otherField',
+          errors: ['Please specify your profession'],
+        },
+      ]);
+    }
+
+    console.log('Full Name:', values.name);
     console.log('Profession:', finalField);
-    console.log('Email:', email);
-    console.log('Phone:', phone);
+    console.log('Email:', values.email);
+    console.log('Phone:', values.phone);
 
     router.push('/professional-info');
   };
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-gray-100 px-4">
+    <section className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
       <div className="mb-4">
         <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
       </div>
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
-            <input
-              id="name"
-              type="text"
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your full name"
-              required
-            />
-          </div>
 
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+      <Card className="w-full max-w-md shadow-xl rounded-2xl px-6 py-8">
+        <Title level={3} style={{ textAlign: 'center', marginBottom: 24 }}>
+          Personal Information
+        </Title>
 
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Phone Number
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your phone number"
-              required
-            />
-          </div>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          requiredMark={false}
+          className="flex flex-col"
+        >
+            <Form.Item
+              label="Full Name"
+              name="name"
+              rules={[{ required: true, message: 'Please enter your full name' }]}
+              style={{ marginBottom: 12 }}
+            >
+              <Input placeholder="Enter your full name" />
+            </Form.Item>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select your area of profession
-            </label>
-            <div className="flex flex-wrap gap-2">
-              {fields.map(field => (
-                <label
-                  key={field}
-                  className={`cursor-pointer px-4 py-2 text-sm border rounded-lg ${
-                    selectedField === field
-                      ? 'bg-purple-600 text-white border-purple-600'
-                      : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100'
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="profession"
-                    className="hidden"
-                    value={field}
-                    checked={selectedField === field}
-                    onChange={() => setSelectedField(field)}
-                  />
-                  {field}
-                </label>
-              ))}
-            </div>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[{ required: true, type: 'email', message: 'Enter a valid email' }]}
+              style={{ marginBottom: 12 }}
+            >
+              <Input placeholder="Enter your email" />
+            </Form.Item>
+
+            <Form.Item
+              label="Phone Number"
+              name="phone"
+              rules={[{ required: true, message: 'Enter your phone number' }]}
+              style={{ marginBottom: 12 }}
+            >
+              <Input placeholder="Enter your phone number" />
+            </Form.Item>
+
+            <Form.Item label="Select your area of profession" required>
+              <div className="flex flex-wrap gap-2">
+                {fields.map((field) => (
+                  <label
+                    key={field}
+                    onClick={() => setSelectedField(field)}
+                    className={`cursor-pointer rounded-lg border px-3 py-1 text-sm transition-all
+                      ${
+                        selectedField === field
+                          ? 'border-purple-600 text-purple-600 font-medium'
+                          : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                      }`}
+                  >
+                    {field}
+                  </label>
+                ))}
+              </div>
+            </Form.Item>
 
             {selectedField === 'Other' && (
-              <input
-                type="text"
-                className="mt-4 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Please specify your profession"
-                value={otherField}
-                onChange={(e) => setOtherField(e.target.value)}
-                required
-              />
+              <Form.Item
+                name="otherField"
+                rules={[{ required: true, message: 'Please specify your profession' }]}
+              >
+                <Input
+                  placeholder="Please specify your profession"
+                  value={otherField}
+                  onChange={(e) => setOtherField(e.target.value)}
+                />
+              </Form.Item>
             )}
-          </div>
 
-          <button
-            type="submit"
-            className="bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition"
-          >
-            Continue
-          </button>
-        </form>
-      </div>
+            <Form.Item>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                className="bg-purple-600 hover:bg-purple-700"
+              >
+                Continue
+              </Button>
+            </Form.Item>
+
+        </Form>
+      </Card>
     </section>
   );
 }

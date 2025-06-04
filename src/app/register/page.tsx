@@ -1,136 +1,141 @@
 'use client';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import {
+  Tabs,
+  Form,
+  Input,
+  Button,
+  Checkbox,
+  Typography,
+  Card,
+} from 'antd';
+
+const { Title, Text } = Typography;
 
 export default function RegisterPage() {
-  const [activeTab, setActiveTab] = useState('personal');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [agree, setAgree] = useState(false);
   const router = useRouter();
+  const [form] = Form.useForm();
+  const [agree, setAgree] = useState(false);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleFinish = (values: any) => {
     if (!agree) {
       alert('Anda harus menyetujui Syarat dan Ketentuan.');
       return;
     }
 
-    // Simulasikan submit form (bisa ganti dengan API call)
-    console.log('Submit data:', {
-      email,
-      password,
-      type: activeTab,
-    });
-
+    console.log('Submit data:', values);
     router.push('/personal-info');
   };
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-gray-100">
-      {/* Logo */}
-      <div className="mb-4">
-        <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
+    <div className="flex flex-col justify-center items-center bg-gray-100 px-4 py-10 min-h-screen">
+      <div className="mb-4 text-center">
+        <img src="/images/logo/NexCardify.png" alt="Logo" style={{ height: 48 }} />
+        <Title level={3} style={{ marginTop: 8, marginBottom: 0 }}>Sign up for free!</Title>
       </div>
 
-      {/* Heading */}
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Sign up for free!
-      </h2>
+      <Card style={{ maxWidth: 400, width: '100%' }} bordered>
+        <Tabs
+          defaultActiveKey="personal"
+          items={[
+            {
+              key: 'personal',
+              label: 'Personal',
+              children: (
+                <Form
+                  form={form}
+                  layout="vertical"
+                  onFinish={handleFinish}
+                  requiredMark={false}
+                  style={{ marginTop: 12 }}
+                >
+                  <Form.Item
+                    label="Email"
+                    name="email"
+                    rules={[{ required: true, message: 'Please enter your email!' }]}
+                    style={{ marginBottom: 16 }}
+                  >
+                    <Input placeholder="Enter your email" />
+                  </Form.Item>
 
-      {/* Card */}
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg overflow-hidden">
-        {/* Tabs inside card */}
-        <div className="flex">
-          <button
-            className={`flex-1 px-4 py-3 text-sm font-medium transition ${
-              activeTab === 'personal'
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-            onClick={() => setActiveTab('personal')}
-          >
-            Personal
-          </button>
-          <button
-            className={`flex-1 px-4 py-3 text-sm font-medium transition ${
-              activeTab === 'business'
-                ? 'bg-purple-600 text-white cursor-not-allowed opacity-50'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`}
-            onClick={() => setActiveTab('business')}
-            disabled
-          >
-            Business
-          </button>
-        </div>
+                  <Form.Item
+                    label="Password"
+                    name="password"
+                    rules={[{ required: true, message: 'Please enter your password!' }]}
+                    style={{ marginBottom: 16 }}
+                  >
+                    <Input.Password placeholder="Enter your password" />
+                  </Form.Item>
 
-        {/* Form */}
-        <div className="p-8">
-          <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
-              </label>
-              <input
-                id="email"
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Enter your email"
-              />
-            </div>
+                  <Form.Item
+                    label="Confirmation Password"
+                    name="confirmation_password"
+                    dependencies={['password']}
+                    rules={[
+                      { required: true, message: 'Please confirm your password!' },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue('password') === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(new Error('Passwords do not match!'));
+                        },
+                      }),
+                    ]}
+                    style={{ marginBottom: 16 }}
+                  >
+                    <Input.Password placeholder="Re-enter your password" />
+                  </Form.Item>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-                placeholder="Enter your password"
-              />
-            </div>
+                  <Form.Item
+                    label="Phone Number"
+                    name="phone_number"
+                    rules={[{ required: true, message: 'Please enter your phone number!' }]}
+                    style={{ marginBottom: 16 }}
+                  >
+                    <Input placeholder="Enter your phone number" />
+                  </Form.Item>
 
-            <div className="flex items-start gap-2 text-sm">
-              <input
-                id="agree"
-                type="checkbox"
-                checked={agree}
-                onChange={(e) => setAgree(e.target.checked)}
-                className="mt-1"
-              />
-              <label htmlFor="agree" className="text-gray-700">
-                By signing up, I confirm that I have read and agree to the{' '}
-                <a href="/terms-of-service" className="text-purple-600 hover:underline">Terms of Service</a> and{' '}
-                <a href="/privacy-policy" className="text-purple-600 hover:underline">Privacy Policy</a>.
-              </label>
-            </div>
-            <button
-              type="submit"
-              className={`bg-purple-600 text-white p-3 rounded-lg font-semibold transition ${
-                !agree ? 'opacity-50 cursor-not-allowed' : 'hover:bg-purple-700'
-              }`}
-              disabled={!agree}
-            >
-              Register as {activeTab === 'personal' ? 'Personal' : 'Business'} User
-            </button>
-          </form>
+                  <Form.Item style={{ marginBottom: 12 }}>
+                    <Checkbox
+                      checked={agree}
+                      onChange={(e) => setAgree(e.target.checked)}
+                    >
+                      I agree to the{' '}
+                      <a href="/terms-of-service" target="_blank">Terms of Service</a> and{' '}
+                      <a href="/privacy-policy" target="_blank">Privacy Policy</a>.
+                    </Checkbox>
+                  </Form.Item>
 
-          {/* Link to login */}
-          <p className="text-center text-sm text-gray-500 mt-6">
-            I already have an account?{' '}
-            <a href="/login" className="text-purple-600 hover:underline">
-              Login
-            </a>
-          </p>
-        </div>
-      </div>
-    </section>
+                  <Form.Item style={{ marginTop: 8 }}>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      block
+                      disabled={!agree}
+                      className="bg-purple-600 hover:bg-purple-700"
+                    >
+                      Register as Personal User
+                    </Button>
+                  </Form.Item>
+                </Form>
+              ),
+            },
+            {
+              key: 'business',
+              label: <span className="text-gray-400">Business (Coming Soon)</span>,
+              disabled: true,
+              children: null,
+            },
+          ]}
+        />
+        <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>
+          Already have an account?{' '}
+          <a href="/login">Login</a>
+        </Text>
+      </Card>
+    </div>
   );
 }

@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Form, Input, Button, Typography, Card } from 'antd';
+
+const { Title } = Typography;
 
 export default function ProfessionalInfoPage() {
   const router = useRouter();
@@ -10,77 +13,72 @@ export default function ProfessionalInfoPage() {
   const [address, setAddress] = useState('');
   const [website, setWebsite] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // if (!company && !address && !website) {
-    //   alert('Please provide at least one field.');
-    //   return;
-    // }
-
-    // Optional: cek di console
+  const handleSubmit = () => {
     console.log({ company, address, website });
-
     router.push('/theme');
   };
 
   return (
-    <section className="w-full h-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
+    <section className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
       <div className="mb-4">
         <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
       </div>
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-        <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="company" className="block text-sm font-medium text-gray-700">
-              Company
-            </label>
-            <input
-              id="company"
-              type="text"
-              value={company}
-              onChange={e => setCompany(e.target.value)}
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Company Name"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-              Address
-            </label>
-            <input
-              id="address"
-              type="text"
-              value={address}
-              onChange={e => setAddress(e.target.value)}
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Company Address"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="website" className="block text-sm font-medium text-gray-700">
-              Link Website
-            </label>
-            <input
-              id="website"
-              type="url"
-              value={website}
-              onChange={e => setWebsite(e.target.value)}
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="https://yourcompany.com"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition"
+      <Card className="w-full max-w-md rounded-2xl shadow-lg">
+        <Title level={3} className="text-center mb-6">Professional Info</Title>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          className="flex flex-col"
+        >
+          <Form.Item
+            label="Company"
+            name="company"
+            style={{ marginBottom: 12 }}
           >
-            Continue
-          </button>
-        </form>
-      </div>
+            <Input
+              placeholder="Company Name"
+              value={company}
+              onChange={(e) => setCompany(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Address"
+            name="address"
+            style={{ marginBottom: 12 }}
+          >
+            <Input
+              placeholder="Company Address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Link Website"
+            name="website"
+            style={{ marginBottom: 12 }}
+          >
+            <Input
+              placeholder="https://yourcompany.com"
+              value={website}
+              onChange={(e) => setWebsite(e.target.value)}
+              type="url"
+            />
+          </Form.Item>
+
+          <Form.Item style={{ marginTop: 16 }}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              className="bg-purple-600 hover:bg-purple-700"
+            >
+              Continue
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
     </section>
   );
 }
