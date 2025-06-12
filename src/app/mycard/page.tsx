@@ -1,103 +1,38 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { List, Avatar, Typography, Button, Popconfirm, message, Space } from 'antd';
 import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { Api } from '@api/api';
+import { encryptId } from '@/utils/crypto';
+import Image from 'next/image';
 
 const { Text, Title } = Typography;
 
-const initialData = [
-  {
-    id: 1,
-    name: 'John Smith',
-    title: 'Senior Developer at Codeify Inc.',
-    email: 'john@example.com',
-    avatar: '/default-avatar.png',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg',
-  },
-  {
-    id: 2,
-    name: 'Aisyah Nurhaliza',
-    title: 'Marketing Executive at Hijrah Corp.',
-    email: 'aisyah@hijrah.id',
-    avatar: '/default-avatar.png',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9148/1_11609006_image_p1_common.jpg',
-  },
-  {
-    id: 3,
-    name: 'Michael Tan',
-    title: 'Product Manager at Innovatech',
-    email: 'michael.tan@innovatech.com',
-    avatar: '/default-avatar.png',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/12/14932_1.jpg',
-  },
-  {
-    id: 4,
-    name: 'Siti Rahmawati',
-    title: 'UX Designer at Creativa',
-    email: 'siti.rahmawati@creativa.com',
-    avatar: '/default-avatar.png',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9215/1_11709011_image_p1_common.jpg',
-  },
-  {
-    id: 5,
-    name: 'Daniel Lee',
-    title: 'Data Scientist at DataMind',
-    email: 'daniel.lee@datamind.io',
-    avatar: '/default-avatar.png',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/14/15432_1.jpg',
-  },
-  {
-    id: 6,
-    name: 'Lina Putri',
-    title: 'Digital Marketer at SocialBee',
-    email: 'lina.putri@socialbee.com',
-    avatar: '/default-avatar.png',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9222/1_11809009_image_p1_common.jpg',
-  },
-  {
-    id: 7,
-    name: 'Tommy Gunawan',
-    title: 'Fullstack Developer at CodeBase',
-    email: 'tommy.gunawan@codebase.dev',
-    avatar: '/default-avatar.png',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/15/15744_1.jpg',
-  },
-  {
-    id: 8,
-    name: 'Nadia Safira',
-    title: 'Content Strategist at MediaPlus',
-    email: 'nadia.safira@mediaplus.id',
-    avatar: '/default-avatar.png',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9235/1_11909012_image_p1_common.jpg',
-  },
-  {
-    id: 9,
-    name: 'Ricky Santoso',
-    title: 'DevOps Engineer at Cloudify',
-    email: 'ricky.santoso@cloudify.com',
-    avatar: '/default-avatar.png',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/16/16023_1.jpg',
-  },
-  {
-    id: 10,
-    name: 'Dewi Lestari',
-    title: 'HR Manager at TalentHub',
-    email: 'dewi.lestari@talenthub.co',
-    avatar: '/default-avatar.png',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9250/1_12009007_image_p1_common.jpg',
-  },
-
-];
-
 export default function ListCardWithPreview() {
-  const [data, setData] = useState(initialData);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const router = useRouter();
 
   const selectedCard = data.find((item) => item.id === selectedId) || null;
+
+  const fetchCards = async () => {
+    setLoading(true);
+    try {
+      const res = await Api.get('user/members'); // asumsi ini endpoint-nya
+      setData(res?.data || []);
+    } catch (error) {
+      message.error(error?.data?.message || 'Failed to fetch cards');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchCards();
+  }, []);
 
   const handleAddCard = () => {
     const newId = Date.now();
@@ -107,7 +42,10 @@ export default function ListCardWithPreview() {
   };
 
   const handleEdit = (id: number) => {
-    router.push(`/mycard-detail?id=${id}`);
+    
+    const encryptedId = encryptId(id);
+
+    router.push(`/mycard/${encryptedId}`);
   };
 
   const handleDelete = (id: number) => {
@@ -177,10 +115,10 @@ export default function ListCardWithPreview() {
             >
               <List.Item.Meta
                 avatar={<Avatar src={item.avatar} />}
-                title={<Text strong>{item.name}</Text>}
+                title={<Text strong>{item.full_name}</Text>}
                 description={
                   <>
-                    <Text>{item.title}</Text>
+                    <Text>{item.job_title} - {item.company_name}</Text>
                     <br />
                     <Text type="secondary">{item.email}</Text>
                   </>

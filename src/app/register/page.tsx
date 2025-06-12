@@ -31,7 +31,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      const response = await Api.post('auth/register', null, payload);
+      const response = await Api.post('auth/register', payload);
       message.success(response.message || 'Registration successful!');
     
       const loginCallback = await signIn('credentials', {

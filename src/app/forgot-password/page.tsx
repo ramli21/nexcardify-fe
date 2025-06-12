@@ -16,7 +16,7 @@ export default function LoginPage() {
   const handleSubmit = async (values: ForgotPayload) => {
     setLoading(true);
     try {
-      const res = await Api.post('auth/request-reset', null, values);
+      const res = await Api.post('auth/request-reset', values);
       message.success(res.message || 'The password reset link has been sent to your email.');
       setTimeout(() => router.push('/login'), 2000);
     } catch (error: any) {

@@ -1,26 +1,68 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
+import { useState, useEffect } from 'react';
 import { Pencil } from 'lucide-react';
 import { Input, Button, Typography, Upload, message } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
+import { decryptId } from '@/utils/crypto';
+import { Api } from '@api/api';
+import Image from 'next/image';
 
 const { Title, Text } = Typography;
 
-export default function MyCardDetailPage() {
+export default function DetailCardWithPreview() {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const params = useParams();
+  const encryptedId = params.id;
+  const id = decryptId(encryptedId);
+
+  const fetchCards = async () => {
+    setLoading(true);
+    try {
+      const res = await Api.get('user/members/' + id);
+      setData(res?.data || []);
+    } catch (error) {
+      message.error(error?.data?.message || 'Failed to fetch cards');
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
+    fetchCards();
+  }, []);
+
   const [avatar, setAvatar] = useState('/default-avatar.png');
   const [form, setForm] = useState({
-    fullName: 'John Smith',
+    full_name: '',
     nickname: '',
-    email: 'john@example.com',
-    phone: '+1 234 567 890',
-    job: 'Senior Developer',
-    company: 'Codeify Inc.',
-    address: '123 Silicon Valley Blvd, San Francisco, CA',
-    website: 'www.johnsmith.dev',
+    email: '',
+    phone_number: '',
+    job_title: '',
+    company_name: '',
+    address: '',
+    website: '',
   });
+
+  useEffect(() => {
+    if (data) {
+      setForm((prev) => ({
+        ...prev,
+        full_name: data.full_name || '',
+        email: data.email || '',
+        phone_number: data.phone_number || '',
+        job_title: data.job_title || '',
+        company_name: data.company_name || '',
+        address: data.address || '',
+        website: data.website || '',
+      }));
+    }
+  }, [data]);
+
   const router = useRouter();
 
   const handleInputChange = (field: string, value: string) => {
@@ -82,8 +124,8 @@ export default function MyCardDetailPage() {
         <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
           <Input
             placeholder="Full Name"
-            value={form.fullName}
-            onChange={e => handleInputChange('fullName', e.target.value)}
+            value={form.full_name}
+            onChange={e => handleInputChange('full_name', e.target.value)}
           />
           <Input
             placeholder="Nickname (optional)"
@@ -101,22 +143,22 @@ export default function MyCardDetailPage() {
           />
           <Input
             placeholder="Phone Number"
-            value={form.phone}
-            onChange={e => handleInputChange('phone', e.target.value)}
+            value={form.phone_number}
+            onChange={e => handleInputChange('phone_number', e.target.value)}
           />
         </div>
 
         <Input
-          placeholder="Job"
-          value={form.job}
-          onChange={e => handleInputChange('job', e.target.value)}
+          placeholder="job_title"
+          value={form.job_title}
+          onChange={e => handleInputChange('job_title', e.target.value)}
           style={{ marginBottom: 16 }}
         />
 
         <Input
-          placeholder="Company"
-          value={form.company}
-          onChange={e => handleInputChange('company', e.target.value)}
+          placeholder="company_name"
+          value={form.company_name}
+          onChange={e => handleInputChange('company_name', e.target.value)}
           style={{ marginBottom: 16 }}
         />
 
