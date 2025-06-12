@@ -28,8 +28,6 @@ export const options: NextAuthOptions = {
       async authorize(credentials, req) {
         const { email, password } = credentials as any
 
-        console.log(email, password)
-
         const res = await fetch(`${API_URL}/auth/login`, {
           method: 'POST',
           headers: {

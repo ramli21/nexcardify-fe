@@ -1,80 +1,151 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import type { FormProps } from 'antd';
+import { Form, Input, Button, Typography, Card, message } from 'antd';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+const { Title, Text } = Typography;
+
+type FieldType = {
+  email?: string
+  password?: string
+}
 
 export default function LoginPage() {
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    
-    e.preventDefault();
+  const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
+    setLoading(true)
 
-    router.push('/dashboard');
-  };
+    signIn('credentials', {
+      ...values,
+      redirect: false,
+      callbackUrl: '/',
+    })
+      .then((callback) => {
+        if (callback?.error) {
+          message.error(callback?.error)
+
+          setLoading(false)
+          return
+        }
+
+        if (callback?.ok && !callback?.error) {
+          message.success('Login successful')
+
+          setLoading(false)
+          router.push('/dashboard')
+          router.refresh()
+        }
+      })
+      .catch((err) => {
+        setLoading(false)
+
+        message.error(err.message)
+      })
+  }
+
+  const onFinishFailed: FormProps<FieldType>['onFinishFailed'] = (
+    errorInfo
+  ) => {
+    console.log('Failed:', errorInfo)
+  }
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-gray-100">
-
-      <div className="mb-4">
-        <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
+    <section style={styles.container}>
+      <div style={styles.logoWrapper}>
+        <Image src="/images/logo/NexCardify.png" alt="Logo" width={120} height={48} />
       </div>
 
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">
-        Sign in to your account
-      </h2>
+      <Title level={3} style={styles.title}>Sign in to your account</Title>
 
-      <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-lg">
-        <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
-            <input
-              id="email"
-              type="text"
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your email"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
-            <input
-              id="password"
-              type="password"
-              className="mt-1 w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
-              placeholder="Enter your password"
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="bg-purple-600 text-white p-3 rounded-lg font-semibold hover:bg-purple-700 transition"
-          >
-            Login
-          </button>
-        </form>
-
-        {/* <div className="my-6 flex items-center">
-          <hr className="flex-grow border-gray-300" />
-          <span className="mx-2 text-gray-500 text-sm">OR</span>
-          <hr className="flex-grow border-gray-300" />
-        </div>
-
-        <button
-          type="button"
-          className="w-full flex items-center justify-center gap-2 border border-gray-300 p-3 rounded-lg hover:bg-gray-100 transition"
+      <Card style={styles.card}>
+        <Form 
+          layout="vertical" 
+          name="basic"
+          initialValues={{ email: 'zenstory12@gmail.com', password: '5t4r3e2w!Q' }}
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+          autoComplete="off"
+          size="large"
         >
-          <img src="/images/logo/google.png" alt="Google" className="w-5 h-5" />
-          <span className="text-sm text-gray-700 font-medium">Login with Google</span>
-        </button> */}
+          <Form.Item<FieldType>
+            label="Email"
+            name="email"
+            rules={[
+              {
+                type: 'email',
+                required: true,
+                message: 'Please input your email!',
+              },
+            ]}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
 
-        <p className="text-center text-sm text-gray-500 mt-6">
-          Don't have an account?{" "}
-          <a href="/register" className="text-purple-600 hover:underline">Register</a>
-        </p>
-      </div>
+          <Form.Item<FieldType>
+            label="Password"
+            name="password"
+            rules={[
+              {
+                required: true, 
+                message: 'Please input your password!'
+              }
+            ]}
+          >
+            <Input.Password placeholder="Enter your password"/>
+          </Form.Item>
+          <div style={{ textAlign: 'right', marginBottom: 12 }}>
+            <Link href="/forgot-password" style={{ fontSize: 13 }}>
+              Forgot Password?
+            </Link>
+          </div>
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block loading={loading}>
+              Login
+            </Button>
+          </Form.Item>
+        </Form>
+
+        <Text type="secondary" style={styles.registerText}>
+          Don&apos;t have an account? <Link href="/register">Register</Link>
+        </Text>
+      </Card>
     </section>
   );
 }
+
+const styles: Record<string, React.CSSProperties> = {
+  container: {
+    width: '100%',
+    height: '100vh',
+    backgroundColor: '#f5f5f5',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  logoWrapper: {
+    marginBottom: 16,
+  },
+  title: {
+    color: '#333',
+    marginBottom: 24,
+  },
+  card: {
+    width: 400,
+    borderRadius: 16,
+    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+    paddingTop: 8,
+  },
+  registerText: {
+    display: 'block',
+    textAlign: 'center',
+    marginTop: 16,
+  },
+};
