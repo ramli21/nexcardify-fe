@@ -1,41 +1,76 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Button, Typography, Card, message } from 'antd';
-import { ForgotPayload } from '@/services/types';
-import { Api } from '../api/api';
-import Image from 'next/image';
-import Link from 'next/link';
+'use client'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Form, Input, Button, Typography, Card, message } from 'antd'
+import { ForgotPayload } from '@/services/types'
+import { Api } from '../api/api'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [loading, setLoading] = useState(false);
+  const router = useRouter()
+  const [loading, setLoading] = useState(false)
+  const [form] = Form.useForm()
 
-  const handleSubmit = async (values: ForgotPayload) => {
-    setLoading(true);
+  const handleSubmitOld = async (values: ForgotPayload) => {
+    setLoading(true)
     try {
-      const res = await Api.post('auth/request-reset', values);
-      message.success(res.message || 'The password reset link has been sent to your email.');
-      setTimeout(() => router.push('/login'), 2000);
+      const res = await Api.post('auth/request-reset', values)
+      message.success(
+        res.message || 'The password reset link has been sent to your email.'
+      )
+      setTimeout(() => router.push('/login'), 2000)
     } catch (error: any) {
-      message.error(error?.data?.message || 'An error occurred. Please try again.');
+      message.error(
+        error?.data?.message || 'An error occurred. Please try again.'
+      )
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-  
+  }
+
+  const handleSubmit = (values: any) => {
+    setLoading(true)
+
+    Api.post('auth/request-reset', values)
+      .then((res) => {
+        message.success(
+          res.message || 'The password reset link has been sent to your email.'
+        )
+        setTimeout(() => router.push('/login'), 2000)
+      })
+      .catch((err) => {
+        message.error(
+          err?.data?.message || 'An error occurred. Please try again.'
+        )
+      })
+      .finally(() => setLoading(false))
+  }
+
   return (
     <section style={styles.container}>
       <div style={styles.logoWrapper}>
-        <Image src="/images/logo/NexCardify.png" alt="Logo" width={120} height={48} />
+        <Image
+          src="/images/logo/NexCardify.png"
+          alt="Logo"
+          width={120}
+          height={48}
+        />
       </div>
 
-      <Title level={3} style={styles.title}>Forgot Password</Title>
+      <Title level={3} style={styles.title}>
+        Forgot Password
+      </Title>
 
       <Card style={styles.card}>
-        <Form layout="vertical" onFinish={handleSubmit} requiredMark={false}>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSubmit}
+          requiredMark={false}
+        >
           <Form.Item
             label="Email"
             name="email"
@@ -58,7 +93,7 @@ export default function LoginPage() {
         </Text>
       </Card>
     </section>
-  );
+  )
 }
 
 const styles: Record<string, React.CSSProperties> = {
@@ -85,8 +120,8 @@ const styles: Record<string, React.CSSProperties> = {
     paddingTop: 8,
   },
   backLoginText: {
-    display: 'block', 
-    textAlign: 'center', 
-    marginTop: 16
+    display: 'block',
+    textAlign: 'center',
+    marginTop: 16,
   },
-};
+}

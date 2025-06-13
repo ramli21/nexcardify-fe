@@ -1,42 +1,42 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { Pencil } from 'lucide-react';
-import { Input, Button, Typography, Upload, message } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
-import { useParams } from 'next/navigation';
-import { decryptId } from '@/utils/crypto';
-import { Api } from '@api/api';
-import Image from 'next/image';
+import { useState, useEffect } from 'react'
+import { Pencil } from 'lucide-react'
+import { Input, Button, Typography, Upload, message } from 'antd'
+import { UploadOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/navigation'
+import { useParams } from 'next/navigation'
+import { decryptId } from '@/utils/crypto'
+import { Api } from '@api/api'
+import Image from 'next/image'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export default function DetailCardWithPreview() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<any>(null)
+  const [loading, setLoading] = useState(false)
 
-  const params = useParams();
-  const encryptedId = params.id;
-  const id = decryptId(encryptedId);
+  const params = useParams()
+  const id = params.id
+  // const id = decryptId(encryptedId);
 
   const fetchCards = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const res = await Api.get('user/members/' + id);
-      setData(res?.data || []);
-    } catch (error) {
-      message.error(error?.data?.message || 'Failed to fetch cards');
+      const res = await Api.get('user/members/' + id)
+      setData(res?.data || {})
+    } catch (error: any) {
+      message.error(error?.data?.message || 'Failed to fetch cards')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-  
-  useEffect(() => {
-    fetchCards();
-  }, []);
+  }
 
-  const [avatar, setAvatar] = useState('/default-avatar.png');
+  useEffect(() => {
+    fetchCards()
+  }, [])
+
+  const [avatar, setAvatar] = useState('/default-avatar.png')
   const [form, setForm] = useState({
     full_name: '',
     nickname: '',
@@ -46,7 +46,7 @@ export default function DetailCardWithPreview() {
     company_name: '',
     address: '',
     website: '',
-  });
+  })
 
   useEffect(() => {
     if (data) {
@@ -59,33 +59,33 @@ export default function DetailCardWithPreview() {
         company_name: data.company_name || '',
         address: data.address || '',
         website: data.website || '',
-      }));
+      }))
     }
-  }, [data]);
+  }, [data])
 
-  const router = useRouter();
+  const router = useRouter()
 
   const handleInputChange = (field: string, value: string) => {
-    setForm(prev => ({ ...prev, [field]: value }));
-  };
+    setForm((prev) => ({ ...prev, [field]: value }))
+  }
 
   const handleAvatarChange = (info: any) => {
     if (info.file.status === 'done' || info.file.status === 'uploading') {
-      const file = info.file.originFileObj;
+      const file = info.file.originFileObj
       if (file) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          setAvatar(e.target?.result as string);
-        };
-        reader.readAsDataURL(file);
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          setAvatar(e.target?.result as string)
+        }
+        reader.readAsDataURL(file)
       }
     }
-  };
+  }
 
   const handleSave = () => {
-    message.success('Data saved!');
-    router.push(`/mycard`);
-  };
+    message.success('Data saved!')
+    router.push(`/mycard`)
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', padding: 24 }}>
@@ -93,13 +93,24 @@ export default function DetailCardWithPreview() {
       <div style={{ flex: 3, paddingRight: 24, borderRight: '1px solid #ddd' }}>
         <Title level={3}>Your Card Settings</Title>
 
-        <div style={{ marginBottom: 24, position: 'relative', width: 96, height: 96 }}>
+        <div
+          style={{
+            marginBottom: 24,
+            position: 'relative',
+            width: 96,
+            height: 96,
+          }}
+        >
           <Image
             src={avatar}
             alt="Logo"
             width={96}
             height={96}
-            style={{ borderRadius: '50%', objectFit: 'cover', border: '1px solid #ddd' }}
+            style={{
+              borderRadius: '50%',
+              objectFit: 'cover',
+              border: '1px solid #ddd',
+            }}
           />
           <Upload
             showUploadList={false}
@@ -125,12 +136,12 @@ export default function DetailCardWithPreview() {
           <Input
             placeholder="Full Name"
             value={form.full_name}
-            onChange={e => handleInputChange('full_name', e.target.value)}
+            onChange={(e) => handleInputChange('full_name', e.target.value)}
           />
           <Input
             placeholder="Nickname (optional)"
             value={form.nickname}
-            onChange={e => handleInputChange('nickname', e.target.value)}
+            onChange={(e) => handleInputChange('nickname', e.target.value)}
           />
         </div>
 
@@ -139,26 +150,26 @@ export default function DetailCardWithPreview() {
             placeholder="Email"
             type="email"
             value={form.email}
-            onChange={e => handleInputChange('email', e.target.value)}
+            onChange={(e) => handleInputChange('email', e.target.value)}
           />
           <Input
             placeholder="Phone Number"
             value={form.phone_number}
-            onChange={e => handleInputChange('phone_number', e.target.value)}
+            onChange={(e) => handleInputChange('phone_number', e.target.value)}
           />
         </div>
 
         <Input
           placeholder="job_title"
           value={form.job_title}
-          onChange={e => handleInputChange('job_title', e.target.value)}
+          onChange={(e) => handleInputChange('job_title', e.target.value)}
           style={{ marginBottom: 16 }}
         />
 
         <Input
           placeholder="company_name"
           value={form.company_name}
-          onChange={e => handleInputChange('company_name', e.target.value)}
+          onChange={(e) => handleInputChange('company_name', e.target.value)}
           style={{ marginBottom: 16 }}
         />
 
@@ -166,7 +177,7 @@ export default function DetailCardWithPreview() {
           placeholder="Address"
           rows={3}
           value={form.address}
-          onChange={e => handleInputChange('address', e.target.value)}
+          onChange={(e) => handleInputChange('address', e.target.value)}
           style={{ marginBottom: 16 }}
         />
 
@@ -174,7 +185,7 @@ export default function DetailCardWithPreview() {
           placeholder="Link Website"
           type="url"
           value={form.website}
-          onChange={e => handleInputChange('website', e.target.value)}
+          onChange={(e) => handleInputChange('website', e.target.value)}
           style={{ marginBottom: 24 }}
         />
 
@@ -195,13 +206,15 @@ export default function DetailCardWithPreview() {
         }}
       >
         <Image
-            src={'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg'}
-            alt="Preview"
-            height={300}
-            width={300}
-            style={{ objectFit: 'contain' }}
-          />
+          src={
+            'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg'
+          }
+          alt="Preview"
+          height={300}
+          width={300}
+          style={{ objectFit: 'contain' }}
+        />
       </div>
     </div>
-  );
+  )
 }
