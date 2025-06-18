@@ -1,58 +1,65 @@
-'use client';
+'use client'
 
-import { useState, useEffect } from 'react';
-import { List, Avatar, Typography, Button, Popconfirm, message, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
-import { Api } from '@api/api';
-import { encryptId } from '@/utils/crypto';
-import Image from 'next/image';
+import { useState, useEffect } from 'react'
+import {
+  List,
+  Avatar,
+  Typography,
+  Button,
+  Popconfirm,
+  message,
+  Space,
+} from 'antd'
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/navigation'
+import { Api } from '@api/api'
+import { encryptId } from '@/utils/crypto'
+import Image from 'next/image'
 
-const { Text, Title } = Typography;
+const { Text, Title } = Typography
 
 export default function ListCardWithPreview() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const router = useRouter();
+  const [data, setData] = useState<object | null>(null)
+  const [loading, setLoading] = useState(false)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const router = useRouter()
 
-  const selectedCard = data.find((item) => item.id === selectedId) || null;
+  const selectedCard = data.find((item) => item.id === selectedId) || null
 
   const fetchCards = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const res = await Api.get('user/members'); // asumsi ini endpoint-nya
-      setData(res?.data || []);
+      const res = await Api.get('user/members') // asumsi ini endpoint-nya
+      setData(res?.data || [])
     } catch (error) {
-      message.error(error?.data?.message || 'Failed to fetch cards');
+      message.error(error?.data?.message || 'Failed to fetch cards')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
-  
+  }
+
   useEffect(() => {
-    fetchCards();
-  }, []);
+    fetchCards()
+  }, [])
 
   const handleAddCard = () => {
-    const newId = Date.now();
+    const newId = Date.now()
     // Kalau kamu mau simpan data baru di state dulu bisa, tapi biasanya langsung ke detail page untuk input
     // Redirect ke halaman detail dengan id baru
-    router.push(`/mycard-detail?id=${newId}`);
-  };
+    router.push(`/mycard-detail?id=${newId}`)
+  }
 
   const handleEdit = (id: number) => {
-    
-    const encryptedId = encryptId(id);
+    const encryptedId = encryptId(id)
 
-    router.push(`/mycard/${encryptedId}`);
-  };
+    router.push(`/mycard/${encryptedId}`)
+  }
 
   const handleDelete = (id: number) => {
-    setData(data.filter((item) => item.id !== id));
-    message.success(`Deleted card ID ${id}`);
-    if (selectedId === id) setSelectedId(null);
-  };
+    setData(data.filter((item) => item.id !== id))
+    message.success(`Deleted card ID ${id}`)
+    if (selectedId === id) setSelectedId(null)
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', padding: 24, gap: 24 }}>
@@ -75,7 +82,8 @@ export default function ListCardWithPreview() {
             <List.Item
               style={{
                 cursor: 'pointer',
-                backgroundColor: item.id === selectedId ? '#f0f0f0' : 'transparent',
+                backgroundColor:
+                  item.id === selectedId ? '#f0f0f0' : 'transparent',
                 borderRadius: 8,
                 padding: '12px 16px',
               }}
@@ -86,8 +94,8 @@ export default function ListCardWithPreview() {
                   type="link"
                   icon={<EditOutlined />}
                   onClick={(e) => {
-                    e.stopPropagation();
-                    handleEdit(item.id);
+                    e.stopPropagation()
+                    handleEdit(item.id)
                   }}
                 >
                   Edit
@@ -96,8 +104,8 @@ export default function ListCardWithPreview() {
                   key="delete"
                   title="Are you sure to delete this card?"
                   onConfirm={(e) => {
-                    e?.stopPropagation();
-                    handleDelete(item.id);
+                    e?.stopPropagation()
+                    handleDelete(item.id)
                   }}
                   okText="Yes"
                   cancelText="No"
@@ -118,7 +126,9 @@ export default function ListCardWithPreview() {
                 title={<Text strong>{item.full_name}</Text>}
                 description={
                   <>
-                    <Text>{item.job_title} - {item.company_name}</Text>
+                    <Text>
+                      {item.job_title} - {item.company_name}
+                    </Text>
                     <br />
                     <Text type="secondary">{item.email}</Text>
                   </>
@@ -144,5 +154,5 @@ export default function ListCardWithPreview() {
         )}
       </div>
     </div>
-  );
+  )
 }

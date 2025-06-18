@@ -1,89 +1,94 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Button, Checkbox, Typography, Card, message } from 'antd';
-import { Api } from '@/app/api/api';
-import { RegisterPayload } from '@/services/types';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Form, Input, Button, Checkbox, Typography, Card, message } from 'antd'
+import { Api } from '@/app/api/api'
+import { RegisterPayload } from '@/services/types'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export default function RegisterPage() {
-  const router = useRouter();
-  const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [agree, setAgree] = useState(false);
+  const router = useRouter()
+  const [form] = Form.useForm()
+  const [loading, setLoading] = useState(false)
+  const [agree, setAgree] = useState(false)
 
   const handleFinish = async (values: RegisterPayload) => {
     if (!agree) {
-      message.warning('You must agree to the Terms and Privacy Policy.');
-      return;
+      message.warning('You must agree to the Terms and Privacy Policy.')
+      return
     }
 
     const payload = {
       ...values,
       agree: true,
-    };
+    }
 
-    setLoading(true);
+    setLoading(true)
 
     try {
-      const response = await Api.post('auth/register', payload);
-      message.success(response.message || 'Registration successful!');
-    
+      const response = await Api.post('auth/register', payload)
+      message.success(response.message || 'Registration successful!')
+
       const loginCallback = await signIn('credentials', {
         redirect: false,
         callbackUrl: '/',
         ...payload,
-      });
+      })
 
       if (loginCallback?.error) {
-        message.error(loginCallback.error);
-        return;
+        message.error(loginCallback.error)
+        return
       }
 
       if (loginCallback?.ok && !loginCallback?.error) {
-        router.push('/dashboard');
-        router.refresh();
+        router.push('/dashboard')
+        router.refresh()
       }
-
     } catch (err: any) {
-      const errorData = err?.data;
+      const errorData = err?.data
       if (errorData?.message) {
-        message.error(errorData.message);
+        message.error(errorData.message)
       }
 
       if (errorData?.errors) {
-        const setError: { name: string; errors: string[] }[] = [];
+        const setError: { name: string; errors: string[] }[] = []
 
         Object.keys(errorData.errors).forEach((key: string) => {
           setError.push({
             name: key,
             errors: errorData.errors[key],
-          });
-        });
+          })
+        })
 
-        form.setFields(setError);
+        form.setFields(setError)
       } else {
-        message.error('Registration failed');
+        message.error('Registration failed')
       }
-
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="flex flex-col justify-center items-center bg-gray-100 px-4 py-10 min-h-screen">
       <div className="mb-4 text-center">
-        <Image src="/images/logo/NexCardify.png" alt="Logo" width={120} height={48} />
-        <Title level={3} style={{ marginTop: 8, marginBottom: 0 }}>Sign up for free!</Title>
+        <Image
+          src="/images/logo/NexCardify.png"
+          alt="Logo"
+          width={120}
+          height={48}
+        />
+        <Title level={3} style={{ marginTop: 8, marginBottom: 0 }}>
+          Sign up for free!
+        </Title>
       </div>
 
-      <Card style={{ maxWidth: 400, width: '100%' }} bordered>
+      <Card style={{ maxWidth: 400, width: '100%' }}>
         <Form
           form={form}
           layout="vertical"
@@ -115,7 +120,9 @@ export default function RegisterPage() {
           <Form.Item
             label="Phone Number"
             name="phone_number"
-            rules={[{ required: true, message: 'Please enter your phone number!' }]}
+            rules={[
+              { required: true, message: 'Please enter your phone number!' },
+            ]}
             style={{ marginBottom: 16 }}
           >
             <Input placeholder="Enter your phone number" />
@@ -139,9 +146,9 @@ export default function RegisterPage() {
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
+                    return Promise.resolve()
                   }
-                  return Promise.reject(new Error('Passwords do not match!'));
+                  return Promise.reject(new Error('Passwords do not match!'))
                 },
               }),
             ]}
@@ -156,8 +163,14 @@ export default function RegisterPage() {
               onChange={(e) => setAgree(e.target.checked)}
             >
               I agree to the{' '}
-              <Link href="/terms-of-service" target="_blank">Terms of Service</Link> and{' '}
-              <Link href="/privacy-policy" target="_blank">Privacy Policy</Link>.
+              <Link href="/terms-of-service" target="_blank">
+                Terms of Service
+              </Link>{' '}
+              and{' '}
+              <Link href="/privacy-policy" target="_blank">
+                Privacy Policy
+              </Link>
+              .
             </Checkbox>
           </Form.Item>
 
@@ -175,11 +188,13 @@ export default function RegisterPage() {
           </Form.Item>
         </Form>
 
-        <Text type="secondary" style={{ display: 'block', textAlign: 'center', marginTop: 16 }}>
-          Already have an account?{' '}
-          <Link href="/login">Login</Link>
+        <Text
+          type="secondary"
+          style={{ display: 'block', textAlign: 'center', marginTop: 16 }}
+        >
+          Already have an account? <Link href="/login">Login</Link>
         </Text>
       </Card>
     </div>
-  );
+  )
 }
