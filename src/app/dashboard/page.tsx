@@ -1,7 +1,7 @@
-'use client';
+'use client'
 
-import { BarChart2, Eye, MousePointerClick } from "lucide-react";
-import { Line } from 'react-chartjs-2';
+import { BarChart2, Eye, MousePointerClick } from 'lucide-react'
+import { Line } from 'react-chartjs-2'
 import {
   Chart as ChartJS,
   LineElement,
@@ -10,12 +10,19 @@ import {
   CategoryScale,
   Tooltip,
   Legend,
-} from 'chart.js';
-import { Row, Col, Card, Typography, Space } from 'antd';
+} from 'chart.js'
+import { Row, Col, Card, Typography, Space } from 'antd'
 
-ChartJS.register(LineElement, PointElement, LinearScale, CategoryScale, Tooltip, Legend);
+ChartJS.register(
+  LineElement,
+  PointElement,
+  LinearScale,
+  CategoryScale,
+  Tooltip,
+  Legend
+)
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 const chartData = {
   labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
@@ -37,7 +44,7 @@ const chartData = {
       fill: true,
     },
   ],
-};
+}
 
 const chartOptions = {
   responsive: true,
@@ -47,7 +54,7 @@ const chartOptions = {
     tooltip: { mode: 'index' as const, intersect: false },
   },
   scales: { y: { beginAtZero: true } },
-};
+}
 
 export default function CardStatsPage() {
   return (
@@ -55,7 +62,9 @@ export default function CardStatsPage() {
       <Row justify="space-between" align="middle" style={{ marginBottom: 32 }}>
         <Col>
           <Title level={3}>Hello, Zaenal 👋</Title>
-          <Text type="secondary">Monitor your digital business card performance today.</Text>
+          <Text type="secondary">
+            Monitor your digital business card performance today.
+          </Text>
         </Col>
         <Col>
           <Text type="secondary">May 22, 2025</Text>
@@ -66,13 +75,23 @@ export default function CardStatsPage() {
         <Col xs={24} md={8}>
           <Card>
             <Space align="start">
-              <div style={{ padding: 12, backgroundColor: '#f3e8ff', borderRadius: 12 }}>
+              <div
+                style={{
+                  padding: 12,
+                  backgroundColor: '#f3e8ff',
+                  borderRadius: 12,
+                }}
+              >
                 <Eye size={24} color="#7e22ce" />
               </div>
               <div>
                 <Text type="secondary">Total Views</Text>
-                <Title level={4} style={{ margin: 0 }}>1,254</Title>
-                <Text type="success" style={{ fontSize: 12 }}>+12% compared to last week</Text>
+                <Title level={4} style={{ margin: 0 }}>
+                  1,254
+                </Title>
+                <Text type="success" style={{ fontSize: 12 }}>
+                  +12% compared to last week
+                </Text>
               </div>
             </Space>
           </Card>
@@ -80,13 +99,23 @@ export default function CardStatsPage() {
         <Col xs={24} md={8}>
           <Card>
             <Space align="start">
-              <div style={{ padding: 12, backgroundColor: '#dbeafe', borderRadius: 12 }}>
+              <div
+                style={{
+                  padding: 12,
+                  backgroundColor: '#dbeafe',
+                  borderRadius: 12,
+                }}
+              >
                 <MousePointerClick size={24} color="#2563eb" />
               </div>
               <div>
                 <Text type="secondary">Total Clicks</Text>
-                <Title level={4} style={{ margin: 0 }}>678</Title>
-                <Text type="danger" style={{ fontSize: 12 }}>-5% compared to last week</Text>
+                <Title level={4} style={{ margin: 0 }}>
+                  678
+                </Title>
+                <Text type="danger" style={{ fontSize: 12 }}>
+                  -5% compared to last week
+                </Text>
               </div>
             </Space>
           </Card>
@@ -94,13 +123,23 @@ export default function CardStatsPage() {
         <Col xs={24} md={8}>
           <Card>
             <Space align="start">
-              <div style={{ padding: 12, backgroundColor: '#dcfce7', borderRadius: 12 }}>
+              <div
+                style={{
+                  padding: 12,
+                  backgroundColor: '#dcfce7',
+                  borderRadius: 12,
+                }}
+              >
                 <BarChart2 size={24} color="#16a34a" />
               </div>
               <div>
                 <Text type="secondary">Conversion Rate</Text>
-                <Title level={4} style={{ margin: 0 }}>54%</Title>
-                <Text type="success" style={{ fontSize: 12 }}>+7% increase</Text>
+                <Title level={4} style={{ margin: 0 }}>
+                  54%
+                </Title>
+                <Text type="success" style={{ fontSize: 12 }}>
+                  +7% increase
+                </Text>
               </div>
             </Space>
           </Card>
@@ -113,5 +152,5 @@ export default function CardStatsPage() {
         </div>
       </Card>
     </div>
-  );
+  )
 }

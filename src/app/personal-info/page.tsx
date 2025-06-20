@@ -1,17 +1,17 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Button, Typography, Card } from 'antd';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Form, Input, Button, Typography, Card } from 'antd'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 export default function PersonalInfoPage() {
-  const router = useRouter();
-  const [form] = Form.useForm();
+  const router = useRouter()
+  const [form] = Form.useForm()
 
-  const [selectedField, setSelectedField] = useState('');
-  const [otherField, setOtherField] = useState('');
+  const [selectedField, setSelectedField] = useState('')
+  const [otherField, setOtherField] = useState('')
 
   const fields = [
     'Software Engineer',
@@ -25,10 +25,10 @@ export default function PersonalInfoPage() {
     'Human Resources',
     'Sales',
     'Other',
-  ];
+  ]
 
   const handleSubmit = (values: any) => {
-    const finalField = selectedField === 'Other' ? otherField : selectedField;
+    const finalField = selectedField === 'Other' ? otherField : selectedField
 
     if (!finalField || (selectedField === 'Other' && !otherField)) {
       return form.setFields([
@@ -36,16 +36,16 @@ export default function PersonalInfoPage() {
           name: 'otherField',
           errors: ['Please specify your profession'],
         },
-      ]);
+      ])
     }
 
-    console.log('Full Name:', values.name);
-    console.log('Profession:', finalField);
-    console.log('Email:', values.email);
-    console.log('Phone:', values.phone);
+    console.log('Full Name:', values.name)
+    console.log('Profession:', finalField)
+    console.log('Email:', values.email)
+    console.log('Phone:', values.phone)
 
-    router.push('/professional-info');
-  };
+    router.push('/professional-info')
+  }
 
   return (
     <section className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
@@ -65,78 +65,81 @@ export default function PersonalInfoPage() {
           requiredMark={false}
           className="flex flex-col"
         >
-            <Form.Item
-              label="Full Name"
-              name="name"
-              rules={[{ required: true, message: 'Please enter your full name' }]}
-              style={{ marginBottom: 12 }}
-            >
-              <Input placeholder="Enter your full name" />
-            </Form.Item>
+          <Form.Item
+            label="Full Name"
+            name="name"
+            rules={[{ required: true, message: 'Please enter your full name' }]}
+            style={{ marginBottom: 12 }}
+          >
+            <Input placeholder="Enter your full name" />
+          </Form.Item>
 
-            <Form.Item
-              label="Email"
-              name="email"
-              rules={[{ required: true, type: 'email', message: 'Enter a valid email' }]}
-              style={{ marginBottom: 12 }}
-            >
-              <Input placeholder="Enter your email" />
-            </Form.Item>
+          <Form.Item
+            label="Email"
+            name="email"
+            rules={[
+              { required: true, type: 'email', message: 'Enter a valid email' },
+            ]}
+            style={{ marginBottom: 12 }}
+          >
+            <Input placeholder="Enter your email" />
+          </Form.Item>
 
-            <Form.Item
-              label="Phone Number"
-              name="phone"
-              rules={[{ required: true, message: 'Enter your phone number' }]}
-              style={{ marginBottom: 12 }}
-            >
-              <Input placeholder="Enter your phone number" />
-            </Form.Item>
+          <Form.Item
+            label="Phone Number"
+            name="phone"
+            rules={[{ required: true, message: 'Enter your phone number' }]}
+            style={{ marginBottom: 12 }}
+          >
+            <Input placeholder="Enter your phone number" />
+          </Form.Item>
 
-            <Form.Item label="Select your area of profession" required>
-              <div className="flex flex-wrap gap-2">
-                {fields.map((field) => (
-                  <label
-                    key={field}
-                    onClick={() => setSelectedField(field)}
-                    className={`cursor-pointer rounded-lg border px-3 py-1 text-sm transition-all
+          <Form.Item label="Select your area of profession" required>
+            <div className="flex flex-wrap gap-2">
+              {fields.map((field) => (
+                <label
+                  key={field}
+                  onClick={() => setSelectedField(field)}
+                  className={`cursor-pointer rounded-lg border px-3 py-1 text-sm transition-all
                       ${
                         selectedField === field
                           ? 'border-purple-600 text-purple-600 font-medium'
                           : 'border-gray-300 text-gray-700 hover:border-gray-400'
                       }`}
-                  >
-                    {field}
-                  </label>
-                ))}
-              </div>
+                >
+                  {field}
+                </label>
+              ))}
+            </div>
+          </Form.Item>
+
+          {selectedField === 'Other' && (
+            <Form.Item
+              name="otherField"
+              rules={[
+                { required: true, message: 'Please specify your profession' },
+              ]}
+            >
+              <Input
+                placeholder="Please specify your profession"
+                value={otherField}
+                onChange={(e) => setOtherField(e.target.value)}
+              />
             </Form.Item>
+          )}
 
-            {selectedField === 'Other' && (
-              <Form.Item
-                name="otherField"
-                rules={[{ required: true, message: 'Please specify your profession' }]}
-              >
-                <Input
-                  placeholder="Please specify your profession"
-                  value={otherField}
-                  onChange={(e) => setOtherField(e.target.value)}
-                />
-              </Form.Item>
-            )}
-
-            <Form.Item>
-              <Button
-                type="primary"
-                htmlType="submit"
-                block
-                className="bg-purple-600 hover:bg-purple-700"
-              >
-                Continue
-              </Button>
-            </Form.Item>
-
+          <Form.Item>
+            <Button
+              type="primary"
+              htmlType="submit"
+              block
+              className="bg-purple-600 hover:bg-purple-700"
+            >
+              Continue
+            </Button>
+          </Form.Item>
         </Form>
       </Card>
     </section>
-  );
+  )
 }

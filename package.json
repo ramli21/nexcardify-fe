@@ -1,6 +1,6 @@
 {
-  "name": "e-learning_project",
-  "version": "2.0.0",
+  "name": "nexcardify",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

@@ -2,7 +2,16 @@
 
 import { useState, useEffect } from 'react'
 import { Pencil } from 'lucide-react'
-import { Input, Button, Typography, Upload, message } from 'antd'
+import {
+  Input,
+  Button,
+  Typography,
+  Upload,
+  message,
+  Form,
+  Row,
+  Col,
+} from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/navigation'
 import { useParams } from 'next/navigation'
@@ -15,21 +24,26 @@ const { Title, Text } = Typography
 export default function DetailCardWithPreview() {
   const [data, setData] = useState<any>(null)
   const [loading, setLoading] = useState(false)
+  const [form] = Form.useForm()
+  const router = useRouter()
 
   const params = useParams()
-  const id = params.id
-  // const id = decryptId(encryptedId);
+  const encryptedId = params.id
+  const id = decryptId(encryptedId.toString())
 
   const fetchCards = async () => {
     setLoading(true)
-    try {
-      const res = await Api.get('user/members/' + id)
-      setData(res?.data || {})
-    } catch (error: any) {
-      message.error(error?.data?.message || 'Failed to fetch cards')
-    } finally {
-      setLoading(false)
-    }
+
+    await Api.get(`members/${id}`)
+      .then((res: any) => {
+        console.log(res.data)
+
+        form.setFieldsValue(res.data)
+      })
+      .catch((err) => {
+        message.error(err.message || 'Failed to fetch cards')
+      })
+      .finally(() => setLoading(false))
   }
 
   useEffect(() => {
@@ -37,37 +51,35 @@ export default function DetailCardWithPreview() {
   }, [])
 
   const [avatar, setAvatar] = useState('/default-avatar.png')
-  const [form, setForm] = useState({
-    full_name: '',
-    nickname: '',
-    email: '',
-    phone_number: '',
-    job_title: '',
-    company_name: '',
-    address: '',
-    website: '',
-  })
+  // const [form, setForm] = useState({
+  //   full_name: '',
+  //   nickname: '',
+  //   email: '',
+  //   phone_number: '',
+  //   job_title: '',
+  //   company_name: '',
+  //   address: '',
+  //   website: '',
+  // })
 
-  useEffect(() => {
-    if (data) {
-      setForm((prev) => ({
-        ...prev,
-        full_name: data.full_name || '',
-        email: data.email || '',
-        phone_number: data.phone_number || '',
-        job_title: data.job_title || '',
-        company_name: data.company_name || '',
-        address: data.address || '',
-        website: data.website || '',
-      }))
-    }
-  }, [data])
+  // useEffect(() => {
+  //   if (data) {
+  //     // setForm((prev) => ({
+  //     //   ...prev,
+  //     //   full_name: data.full_name || '',
+  //     //   email: data.email || '',
+  //     //   phone_number: data.phone_number || '',
+  //     //   job_title: data.job_title || '',
+  //     //   company_name: data.company_name || '',
+  //     //   address: data.address || '',
+  //     //   website: data.website || '',
+  //     // }))
+  //   }
+  // }, [data])
 
-  const router = useRouter()
-
-  const handleInputChange = (field: string, value: string) => {
-    setForm((prev) => ({ ...prev, [field]: value }))
-  }
+  // const handleInputChange = (field: string, value: string) => {
+  //   // setForm((prev) => ({ ...prev, [field]: value }))
+  // }
 
   const handleAvatarChange = (info: any) => {
     if (info.file.status === 'done' || info.file.status === 'uploading') {
@@ -82,9 +94,9 @@ export default function DetailCardWithPreview() {
     }
   }
 
-  const handleSave = () => {
-    message.success('Data saved!')
-    router.push(`/mycard`)
+  const handleSave = (values: any) => {
+    message.success('Data saved!', values)
+    // router.push(`/mycard`)
   }
 
   return (
@@ -93,105 +105,136 @@ export default function DetailCardWithPreview() {
       <div style={{ flex: 3, paddingRight: 24, borderRight: '1px solid #ddd' }}>
         <Title level={3}>Your Card Settings</Title>
 
-        <div
-          style={{
-            marginBottom: 24,
-            position: 'relative',
-            width: 96,
-            height: 96,
-          }}
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleSave}
+          requiredMark={false}
         >
-          <Image
-            src={avatar}
-            alt="Logo"
-            width={96}
-            height={96}
+          <div
             style={{
-              borderRadius: '50%',
-              objectFit: 'cover',
-              border: '1px solid #ddd',
-            }}
-          />
-          <Upload
-            showUploadList={false}
-            beforeUpload={() => false} // supaya gak auto upload
-            onChange={handleAvatarChange}
-            accept="image/*"
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              backgroundColor: 'white',
-              border: '1px solid #ddd',
-              borderRadius: '50%',
-              padding: 4,
-              cursor: 'pointer',
+              marginBottom: 24,
+              position: 'relative',
+              width: 96,
+              height: 96,
             }}
           >
-            <Pencil size={20} color="#555" />
-          </Upload>
-        </div>
+            <Image
+              src={avatar}
+              alt="Logo"
+              width={96}
+              height={96}
+              style={{
+                borderRadius: '50%',
+                objectFit: 'cover',
+                border: '1px solid #ddd',
+              }}
+            />
+            <Upload
+              showUploadList={false}
+              beforeUpload={() => false} // supaya gak auto upload
+              onChange={handleAvatarChange}
+              accept="image/*"
+              style={{
+                position: 'absolute',
+                bottom: 0,
+                right: 0,
+                backgroundColor: 'white',
+                border: '1px solid #ddd',
+                borderRadius: '50%',
+                padding: 4,
+                cursor: 'pointer',
+              }}
+            >
+              <Pencil size={20} color="#555" />
+            </Upload>
+          </div>
 
-        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-          <Input
-            placeholder="Full Name"
-            value={form.full_name}
-            onChange={(e) => handleInputChange('full_name', e.target.value)}
-          />
-          <Input
-            placeholder="Nickname (optional)"
-            value={form.nickname}
-            onChange={(e) => handleInputChange('nickname', e.target.value)}
-          />
-        </div>
+          <Row gutter={20}>
+            <Col span={12}>
+              <Form.Item
+                label="Full Name"
+                name="full_name"
+                rules={[
+                  { required: true, message: 'Please input your full name!' },
+                ]}
+              >
+                <Input placeholder="Full Name" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Nickname"
+                name="nickname"
+                rules={[
+                  { required: true, message: 'Please input your nickname!' },
+                ]}
+              >
+                <Input placeholder="Nickname (optional)" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <div style={{ display: 'flex', gap: 16, marginBottom: 16 }}>
-          <Input
-            placeholder="Email"
-            type="email"
-            value={form.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
-          />
-          <Input
-            placeholder="Phone Number"
-            value={form.phone_number}
-            onChange={(e) => handleInputChange('phone_number', e.target.value)}
-          />
-        </div>
+          <Row gutter={20}>
+            <Col span={12}>
+              <Form.Item
+                label="Email"
+                name="email"
+                rules={[
+                  {
+                    type: 'email',
+                    required: true,
+                    message: 'Please input your email address!',
+                  },
+                ]}
+              >
+                <Input placeholder="Email" type="email" />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                label="Phone Number"
+                name="phone_number"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your phone number!',
+                  },
+                ]}
+              >
+                <Input placeholder="Phone Number" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-        <Input
-          placeholder="job_title"
-          value={form.job_title}
-          onChange={(e) => handleInputChange('job_title', e.target.value)}
-          style={{ marginBottom: 16 }}
-        />
+          <Form.Item
+            label="Job Title"
+            name="job_title"
+            rules={[
+              { required: true, message: 'Please input your job title!' },
+            ]}
+          >
+            <Input placeholder="job_title" />
+          </Form.Item>
 
-        <Input
-          placeholder="company_name"
-          value={form.company_name}
-          onChange={(e) => handleInputChange('company_name', e.target.value)}
-          style={{ marginBottom: 16 }}
-        />
+          <Form.Item label="Company Name" name="company name">
+            <Input placeholder="company_name" />
+          </Form.Item>
+          <Form.Item label="Address" name="address">
+            <Input.TextArea placeholder="Address" rows={3} />
+          </Form.Item>
+          <Form.Item label="Website" name="website">
+            <Input
+              placeholder="Link Website"
+              type="url"
+              style={{ marginBottom: 24 }}
+            />
+          </Form.Item>
 
-        <Input.TextArea
-          placeholder="Address"
-          rows={3}
-          value={form.address}
-          onChange={(e) => handleInputChange('address', e.target.value)}
-          style={{ marginBottom: 16 }}
-        />
-
-        <Input
-          placeholder="Link Website"
-          type="url"
-          value={form.website}
-          onChange={(e) => handleInputChange('website', e.target.value)}
-          style={{ marginBottom: 24 }}
-        />
-
-        <Button type="primary" block onClick={handleSave}>
-          Save
-        </Button>
+          <Button type="primary" block htmlType="submit">
+            Save
+          </Button>
+        </Form>
       </div>
 
       {/* Preview kanan */}

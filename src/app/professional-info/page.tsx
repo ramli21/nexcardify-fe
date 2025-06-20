@@ -1,22 +1,22 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Form, Input, Button, Typography, Card } from 'antd';
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Form, Input, Button, Typography, Card } from 'antd'
 
-const { Title } = Typography;
+const { Title } = Typography
 
 export default function ProfessionalInfoPage() {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [company, setCompany] = useState('');
-  const [address, setAddress] = useState('');
-  const [website, setWebsite] = useState('');
+  const [company, setCompany] = useState('')
+  const [address, setAddress] = useState('')
+  const [website, setWebsite] = useState('')
 
   const handleSubmit = () => {
-    console.log({ company, address, website });
-    router.push('/theme');
-  };
+    console.log({ company, address, website })
+    router.push('/theme')
+  }
 
   return (
     <section className="w-full min-h-screen flex flex-col justify-center items-center bg-gray-100 px-4 py-10">
@@ -24,7 +24,9 @@ export default function ProfessionalInfoPage() {
         <img src="/images/logo/NexCardify.png" alt="Logo" className="h-12" />
       </div>
       <Card className="w-full max-w-md rounded-2xl shadow-lg">
-        <Title level={3} className="text-center mb-6">Professional Info</Title>
+        <Title level={3} className="text-center mb-6">
+          Professional Info
+        </Title>
         <Form
           layout="vertical"
           onFinish={handleSubmit}
@@ -80,5 +82,5 @@ export default function ProfessionalInfoPage() {
         </Form>
       </Card>
     </section>
-  );
+  )
 }
