@@ -19,5 +19,7 @@ export const config = {
     '/((?!login|forgot|favicon.ico|images|register|/|).*)', // daftar halaman yang tidak perlu akses token
     '/dashboard',
     '/dashboard/:path*',
+    '/profile',
+    '/mycard',
   ],
 }

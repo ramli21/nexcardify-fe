@@ -30,48 +30,37 @@ export default function RegisterPage() {
 
     setLoading(true)
 
-    try {
-      const response = await Api.post('auth/register', payload)
-      message.success(response.message || 'Registration successful!')
+    Api.post('auth/register', payload)
+      .then((res: any) => {
+        message.success(res.message || 'Registration successful!')
 
-      const loginCallback = await signIn('credentials', {
-        redirect: false,
-        callbackUrl: '/',
-        ...payload,
-      })
-
-      if (loginCallback?.error) {
-        message.error(loginCallback.error)
-        return
-      }
-
-      if (loginCallback?.ok && !loginCallback?.error) {
-        router.push('/dashboard')
-        router.refresh()
-      }
-    } catch (err: any) {
-      const errorData = err?.data
-      if (errorData?.message) {
-        message.error(errorData.message)
-      }
-
-      if (errorData?.errors) {
-        const setError: { name: string; errors: string[] }[] = []
-
-        Object.keys(errorData.errors).forEach((key: string) => {
-          setError.push({
-            name: key,
-            errors: errorData.errors[key],
-          })
+        signIn('credentials', {
+          redirect: true,
+          callbackUrl: `/register/${res.member.id}`,
+          ...payload,
         })
+      })
+      .catch((err) => {
+        if (err.message) {
+          message.error(err.message)
+        } else {
+          message.error('Registration failed')
+        }
 
-        form.setFields(setError)
-      } else {
-        message.error('Registration failed')
-      }
-    } finally {
-      setLoading(false)
-    }
+        if (err?.errors) {
+          const setError: { name: string; errors: string[] }[] = []
+
+          Object.keys(err.errors).forEach((key: string) => {
+            setError.push({
+              name: key,
+              errors: err.errors[key],
+            })
+          })
+
+          form.setFields(setError)
+        }
+      })
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -88,13 +77,14 @@ export default function RegisterPage() {
         </Title>
       </div>
 
-      <Card style={{ maxWidth: 400, width: '100%' }}>
+      <Card style={{ maxWidth: 450, width: '100%' }}>
         <Form
           form={form}
           layout="vertical"
           onFinish={handleFinish}
           requiredMark={false}
           style={{ marginTop: 12 }}
+          size="large"
         >
           <Form.Item
             label="Full Name"
