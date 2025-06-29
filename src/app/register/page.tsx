@@ -69,8 +69,9 @@ export default function RegisterPage() {
         <Image
           src="/images/logo/NexCardify.png"
           alt="Logo"
-          width={120}
-          height={48}
+          width={240}
+          height={76}
+          className="m-auto"
         />
         <Title level={3} style={{ marginTop: 8, marginBottom: 0 }}>
           Sign up for free!

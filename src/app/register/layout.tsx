@@ -1,7 +1,3 @@
-import AdminLayout from '@/components/Layout/Admin'
-import { getServerSession } from 'next-auth'
-import { options } from '../api/auth/[...nextauth]/options'
-import { redirect } from 'next/navigation'
 import Header from '@/components/Layout/Header'
 import Footer from '@/components/Layout/Footer'
 import { Layout } from 'antd'
@@ -11,7 +7,7 @@ interface IProps {
   children: React.ReactNode
 }
 
-export default async function DashboardLayout({ children }: IProps) {
+export default async function RegisterLayout({ children }: IProps) {
   return (
     <>
       <Header />

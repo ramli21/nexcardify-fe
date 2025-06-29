@@ -62,8 +62,8 @@ export default function LoginPage() {
         <Image
           src="/images/logo/NexCardify.png"
           alt="Logo"
-          width={120}
-          height={48}
+          width={240}
+          height={76}
         />
       </div>
 
@@ -75,10 +75,6 @@ export default function LoginPage() {
         <Form
           layout="vertical"
           name="basic"
-          initialValues={{
-            email: 'zenstory12@gmail.com',
-            password: '5t4r3e2w!Q',
-          }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
@@ -133,7 +129,7 @@ export default function LoginPage() {
 const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100%',
-    height: '100vh',
+    height: '86vh',
     backgroundColor: '#f5f5f5',
     display: 'flex',
     justifyContent: 'center',
