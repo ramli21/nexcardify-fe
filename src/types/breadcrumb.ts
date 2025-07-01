@@ -1,9 +1,9 @@
 export interface BreadcrumbProps {
-  pageName: string;
-  pageDescription?: string;
+  pageName: string
+  pageDescription?: string
 }
 
 export interface BreadcrumbLink {
-  href: string;
-  text: string;
+  href: string
+  text: string
 }

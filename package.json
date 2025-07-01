@@ -1,7 +1,7 @@
 {
-  "name": "e-learning_project",
-  "version": "2.0.0",
-  "private": true,
+  "name": "nexcardify",
+  "version": "1.0.0",
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,6 +11,7 @@
     "deploy": "touch out/.nojekyll && gh-pages -d out --dotfiles"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.6.1",
     "@ant-design/nextjs-registry": "^1.0.2",
     "@iconify/icons-ion": "^1.2.10",
     "@iconify/react": "^5.0.1",
@@ -41,6 +42,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.7",
+    "@types/crypto-js": "^4.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

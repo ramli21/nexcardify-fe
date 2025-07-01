@@ -1,14 +1,14 @@
-'use client';
+'use client'
 
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import type { FormProps } from 'antd';
-import { Form, Input, Button, Typography, Card, message } from 'antd';
-import { signIn } from 'next-auth/react';
-import Image from 'next/image';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import type { FormProps } from 'antd'
+import { Form, Input, Button, Typography, Card, message } from 'antd'
+import { signIn } from 'next-auth/react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 type FieldType = {
   email?: string
@@ -16,8 +16,8 @@ type FieldType = {
 }
 
 export default function LoginPage() {
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     setLoading(true)
@@ -59,16 +59,22 @@ export default function LoginPage() {
   return (
     <section style={styles.container}>
       <div style={styles.logoWrapper}>
-        <Image src="/images/logo/NexCardify.png" alt="Logo" width={120} height={48} />
+        <Image
+          src="/images/logo/NexCardify.png"
+          alt="Logo"
+          width={240}
+          height={76}
+        />
       </div>
 
-      <Title level={3} style={styles.title}>Sign in to your account</Title>
+      <Title level={3} style={styles.title}>
+        Sign in to your account
+      </Title>
 
       <Card style={styles.card}>
-        <Form 
-          layout="vertical" 
+        <Form
+          layout="vertical"
           name="basic"
-          initialValues={{ email: 'zenstory12@gmail.com', password: '5t4r3e2w!Q' }}
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
@@ -93,12 +99,12 @@ export default function LoginPage() {
             name="password"
             rules={[
               {
-                required: true, 
-                message: 'Please input your password!'
-              }
+                required: true,
+                message: 'Please input your password!',
+              },
             ]}
           >
-            <Input.Password placeholder="Enter your password"/>
+            <Input.Password placeholder="Enter your password" />
           </Form.Item>
           <div style={{ textAlign: 'right', marginBottom: 12 }}>
             <Link href="/forgot-password" style={{ fontSize: 13 }}>
@@ -117,13 +123,13 @@ export default function LoginPage() {
         </Text>
       </Card>
     </section>
-  );
+  )
 }
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
     width: '100%',
-    height: '100vh',
+    height: '86vh',
     backgroundColor: '#f5f5f5',
     display: 'flex',
     justifyContent: 'center',
@@ -148,4 +154,4 @@ const styles: Record<string, React.CSSProperties> = {
     textAlign: 'center',
     marginTop: 16,
   },
-};
+}

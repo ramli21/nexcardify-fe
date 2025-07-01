@@ -7,3 +7,9 @@ declare module 'next-auth' {
     refreshToken: string
   }
 }
+
+declare module 'next-auth/jwt' {
+  interface JWT {
+    user: any
+  }
+}

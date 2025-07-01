@@ -1,12 +1,20 @@
-'use client';
+'use client'
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { List, Avatar, Typography, Button, Popconfirm, message, Space } from 'antd';
-import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react'
+import Image from 'next/image'
+import {
+  List,
+  Avatar,
+  Typography,
+  Button,
+  Popconfirm,
+  message,
+  Space,
+} from 'antd'
+import { EditOutlined, DeleteOutlined, PlusOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/navigation'
 
-const { Text, Title } = Typography;
+const { Text, Title } = Typography
 
 const initialData = [
   {
@@ -16,7 +24,8 @@ const initialData = [
     email: 'john@example.com',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/john',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg',
+    image:
+      'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/10/14644_1.jpg',
   },
   {
     id: 2,
@@ -25,7 +34,8 @@ const initialData = [
     email: 'aisyah@hijrah.id',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/aisyah',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9148/1_11609006_image_p1_common.jpg',
+    image:
+      'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9148/1_11609006_image_p1_common.jpg',
   },
   {
     id: 3,
@@ -34,7 +44,8 @@ const initialData = [
     email: 'michael.tan@innovatech.com',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/michael-tan',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/12/14932_1.jpg',
+    image:
+      'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/12/14932_1.jpg',
   },
   {
     id: 4,
@@ -43,7 +54,8 @@ const initialData = [
     email: 'siti.rahmawati@creativa.com',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/siti-rahmawati',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9215/1_11709011_image_p1_common.jpg',
+    image:
+      'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9215/1_11709011_image_p1_common.jpg',
   },
   {
     id: 5,
@@ -52,7 +64,8 @@ const initialData = [
     email: 'daniel.lee@datamind.io',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/daniel-lee',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/14/15432_1.jpg',
+    image:
+      'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/14/15432_1.jpg',
   },
   {
     id: 6,
@@ -61,7 +74,8 @@ const initialData = [
     email: 'lina.putri@socialbee.com',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/lina-putri',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9222/1_11809009_image_p1_common.jpg',
+    image:
+      'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9222/1_11809009_image_p1_common.jpg',
   },
   {
     id: 7,
@@ -70,7 +84,8 @@ const initialData = [
     email: 'tommy.gunawan@codebase.dev',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/tommy-gunawan',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/15/15744_1.jpg',
+    image:
+      'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/15/15744_1.jpg',
   },
   {
     id: 8,
@@ -79,7 +94,8 @@ const initialData = [
     email: 'nadia.safira@mediaplus.id',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/nadia-safira',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9235/1_11909012_image_p1_common.jpg',
+    image:
+      'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9235/1_11909012_image_p1_common.jpg',
   },
   {
     id: 9,
@@ -88,7 +104,8 @@ const initialData = [
     email: 'ricky.santoso@cloudify.com',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/ricky-santoso',
-    image: 'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/16/16023_1.jpg',
+    image:
+      'https://d3pyarv4eotqu4.cloudfront.net/onlineprin/images/mastertemplates/16/16023_1.jpg',
   },
   {
     id: 10,
@@ -97,37 +114,42 @@ const initialData = [
     email: 'dewi.lestari@talenthub.co',
     avatar: '/default-avatar.png',
     link: 'nexcardify.com/dewi-lestari',
-    image: 'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9250/1_12009007_image_p1_common.jpg',
+    image:
+      'https://d3uzz8tw1vr5h1.cloudfront.net/templates2024/9250/1_12009007_image_p1_common.jpg',
   },
-];
+]
 
 export default function ListCardWithPreview() {
-  const [data, setData] = useState(initialData);
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const router = useRouter();
+  const [data, setData] = useState(initialData)
+  const [selectedId, setSelectedId] = useState<number | null>(null)
+  const router = useRouter()
 
-  const selectedCard = data.find((item) => item.id === selectedId) || null;
+  const selectedCard = data.find((item) => item.id === selectedId) || null
 
   const handleAddCard = () => {
-    const newId = Date.now();
-    router.push(`/mysite-detail?id=${newId}`);
-  };
+    const newId = Date.now()
+    router.push(`/mysite-detail?id=${newId}`)
+  }
 
   const handleEdit = (id: number) => {
-    router.push(`/mysite-detail?id=${id}`);
-  };
+    router.push(`/mysite-detail?id=${id}`)
+  }
 
   const handleDelete = (id: number) => {
-    setData(data.filter((item) => item.id !== id));
-    message.success(`Deleted card ID ${id}`);
-    if (selectedId === id) setSelectedId(null);
-  };
+    setData(data.filter((item) => item.id !== id))
+    message.success(`Deleted card ID ${id}`)
+    if (selectedId === id) setSelectedId(null)
+  }
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', padding: 24, gap: 24 }}>
       <div style={{ flex: 3, maxWidth: 700 }}>
         <Space style={{ marginBottom: 16 }}>
-          <Button type="primary" icon={<PlusOutlined />} onClick={handleAddCard}>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={handleAddCard}
+          >
             New Site
           </Button>
         </Space>
@@ -140,7 +162,8 @@ export default function ListCardWithPreview() {
             <List.Item
               style={{
                 cursor: 'pointer',
-                backgroundColor: item.id === selectedId ? '#f0f0f0' : 'transparent',
+                backgroundColor:
+                  item.id === selectedId ? '#f0f0f0' : 'transparent',
                 borderRadius: 8,
                 padding: '12px 16px',
               }}
@@ -151,8 +174,8 @@ export default function ListCardWithPreview() {
                   type="link"
                   icon={<EditOutlined />}
                   onClick={(e) => {
-                    e.stopPropagation();
-                    handleEdit(item.id);
+                    e.stopPropagation()
+                    handleEdit(item.id)
                   }}
                 >
                   Edit
@@ -161,8 +184,8 @@ export default function ListCardWithPreview() {
                   key="delete"
                   title="Are you sure to delete this card?"
                   onConfirm={(e) => {
-                    e?.stopPropagation();
-                    handleDelete(item.id);
+                    e?.stopPropagation()
+                    handleDelete(item.id)
                   }}
                   okText="Yes"
                   cancelText="No"
@@ -215,16 +238,23 @@ export default function ListCardWithPreview() {
             <Avatar
               src={selectedCard.avatar}
               size={96}
-              style={{ border: '3px solid white', boxShadow: '0 0 8px rgba(255,255,255,0.6)' }}
+              style={{
+                border: '3px solid white',
+                boxShadow: '0 0 8px rgba(255,255,255,0.6)',
+              }}
             />
 
             <Title level={3} style={{ color: 'white', marginBottom: 0 }}>
               {selectedCard.name}
             </Title>
-            <Text style={{ color: 'rgba(255,255,255,0.85)', textAlign: 'center' }}>
+            <Text
+              style={{ color: 'rgba(255,255,255,0.85)', textAlign: 'center' }}
+            >
               {selectedCard.title}
             </Text>
-            <Text style={{ color: 'rgba(255,255,255,0.7)' }}>{selectedCard.email}</Text>
+            <Text style={{ color: 'rgba(255,255,255,0.7)' }}>
+              {selectedCard.email}
+            </Text>
             <a
               href={`https://${selectedCard.link}`}
               target="_blank"
@@ -244,5 +274,5 @@ export default function ListCardWithPreview() {
         )}
       </div>
     </div>
-  );
+  )
 }

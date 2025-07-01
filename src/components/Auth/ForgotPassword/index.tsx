@@ -1,50 +1,50 @@
-"use client";
-import React from "react";
-import { useState } from "react";
-import toast from "react-hot-toast";
-import axios from "axios";
-import Loader from "@/components/Common/Loader";
-import Link from "next/link";
-import Image from "next/image";
-import { getImagePrefix } from "@/utils/util";
+'use client'
+import React from 'react'
+import { useState } from 'react'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import Loader from '@/components/Common/Loader'
+import Link from 'next/link'
+import Image from 'next/image'
+import { getImagePrefix } from '@/utils/util'
 
 const ForgotPassword = () => {
-  const [email, setEmail] = useState("");
-  const [loader, setLoader] = useState(false);
+  const [email, setEmail] = useState('')
+  const [loader, setLoader] = useState(false)
 
   const handleSubmit = async (e: any) => {
-    e.preventDefault();
+    e.preventDefault()
 
     if (!email) {
-      toast.error("Please enter your email address.");
+      toast.error('Please enter your email address.')
 
-      return;
+      return
     }
 
-    setLoader(true);
+    setLoader(true)
 
     try {
-      const res = await axios.post("/api/forgot-password/reset", {
+      const res = await axios.post('/api/forgot-password/reset', {
         email: email.toLowerCase(),
-      });
+      })
 
       if (res.status === 404) {
-        toast.error("User not found.");
-        return;
+        toast.error('User not found.')
+        return
       }
 
       if (res.status === 200) {
-        toast.success(res.data);
-        setEmail("");
+        toast.success(res.data)
+        setEmail('')
       }
 
-      setEmail("");
-      setLoader(false);
+      setEmail('')
+      setLoader(false)
     } catch (error: any) {
-      toast.error(error?.response.data);
-      setLoader(false);
+      toast.error(error?.response.data)
+      setLoader(false)
     }
-  };
+  }
 
   return (
     <section className="bg-[#F4F7FF] py-14 dark:bg-dark lg:py-20">
@@ -319,7 +319,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default ForgotPassword;
+export default ForgotPassword

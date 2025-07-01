@@ -19,19 +19,19 @@ import Image from 'next/image'
 const { Text, Title } = Typography
 
 export default function ListCardWithPreview() {
-  const [data, setData] = useState<object | null>(null)
+  const [data, setData] = useState<Array<any> | undefined>(undefined)
   const [loading, setLoading] = useState(false)
   const [selectedId, setSelectedId] = useState<number | null>(null)
   const router = useRouter()
 
-  const selectedCard = data.find((item) => item.id === selectedId) || null
+  const selectedCard = data ? data.find((item) => item.id === selectedId) : null
 
   const fetchCards = async () => {
     setLoading(true)
     try {
-      const res = await Api.get('user/members') // asumsi ini endpoint-nya
+      const res = await Api.get('members') // asumsi ini endpoint-nya
       setData(res?.data || [])
-    } catch (error) {
+    } catch (error: any) {
       message.error(error?.data?.message || 'Failed to fetch cards')
     } finally {
       setLoading(false)
@@ -56,7 +56,10 @@ export default function ListCardWithPreview() {
   }
 
   const handleDelete = (id: number) => {
-    setData(data.filter((item) => item.id !== id))
+    if (data) {
+      setData(data.filter((item) => item.id !== id))
+    }
+
     message.success(`Deleted card ID ${id}`)
     if (selectedId === id) setSelectedId(null)
   }

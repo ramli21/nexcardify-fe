@@ -63,6 +63,7 @@ export const options: NextAuthOptions = {
       // Send properties to the client, like an access_token from a provider.
       session.accessToken = token.accessToken
       session.user = token.user
+      session.role = token.user.role
 
       return session
     },
