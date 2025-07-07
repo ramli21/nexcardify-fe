@@ -84,7 +84,7 @@ const Header: React.FC = () => {
           </nav>
           <div className="flex items-center gap-4">
             <Link
-              href="/login"
+              href="/signin"
               className="hidden lg:block bg-primary text-white hover:bg-primary/15 hover:text-primary px-16 py-5 rounded-full text-lg font-medium"
             >
               Sign In
@@ -110,7 +110,7 @@ const Header: React.FC = () => {
               </div>
             )}
             <Link
-              href="/register"
+              href="/signup"
               className="hidden lg:block bg-primary/15 hover:bg-primary text-primary hover:text-white px-16 py-5 rounded-full text-lg font-medium"
             >
               Sign Up Free
@@ -172,13 +172,13 @@ const Header: React.FC = () => {
             ))}
             <div className="mt-4 flex flex-col space-y-4 w-full">
               <Link
-                href="/login"
+                href="/signin"
                 className="bg-transparent border border-primary text-primary px-4 py-2 rounded-lg hover:bg-blue-600 hover:text-white"
               >
                 Sign In
               </Link>
               <Link
-                href="/register"
+                href="/signup"
                 className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700"
               >
                 Sign Up Free

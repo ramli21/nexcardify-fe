@@ -1,10 +1,8 @@
-// pages/privacy.js atau components/PrivacyPolicy.jsx
-
 export default function PrivacyPolicy() {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-12">
+    <div className="max-w-3xl mx-auto px-4 py-12 mt-12">
+      <div className="mt-12" />
       <h1 className="text-3xl font-bold mb-6 text-gray-800">Privacy Policy</h1>
-
       <p className="mb-4 text-gray-700">
         This Privacy Policy describes how NexCardify ("we", "our", or "us")
         collects, uses, and protects your personal information when you use our

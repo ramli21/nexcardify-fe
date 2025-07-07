@@ -13,21 +13,30 @@ const footer = () => {
         <div className="grid grid-cols-1 gap-y-10 gap-x-16 sm:grid-cols-2 lg:grid-cols-12 xl:gap-x-8">
           <div className='col-span-4 md:col-span-12 lg:col-span-4'>
             <Logo />
-            <div className='flex items-center gap-4'>
-              <Link href="#" className='hover:text-primary text-black text-3xl'>
-                <Icon
-                  icon="tabler:brand-facebook"
-                />
+            <div className='flex items-center gap-4 mt-2'>
+              <Link
+                href="https://www.facebook.com/people/Nexcardify/61577349953864"
+                target="_blank"
+                rel="noopener noreferrer"
+                className='hover:text-primary text-black text-3xl'
+              >
+                <Icon icon="tabler:brand-facebook" />
               </Link>
-              <Link href="#" className='hover:text-primary text-black text-3xl'>
-                <Icon
-                  icon="tabler:brand-twitter"
-                />
+              <Link
+                href="https://twitter.com/yourhandle"
+                target="_blank"
+                rel="noopener noreferrer"
+                className='hover:text-primary text-black text-3xl'
+              >
+                <Icon icon="tabler:brand-twitter" />
               </Link>
-              <Link href="#" className='hover:text-primary text-black text-3xl'>
-                <Icon
-                  icon="tabler:brand-instagram"
-                />
+              <Link
+                href="https://www.instagram.com/nexcardify"
+                target="_blank"
+                rel="noopener noreferrer"
+                className='hover:text-primary text-black text-3xl'
+              >
+                <Icon icon="tabler:brand-instagram" />
               </Link>
             </div>
           </div>
@@ -47,27 +56,12 @@ const footer = () => {
             <h3 className="mb-4 text-2xl font-medium">Other</h3>
             <ul>
               <li className="mb-2 text-black/50 hover:text-primary w-fit">
-                <Link href="#">
+                <Link href="/about-us">
                   About Us
                 </Link>
               </li>
               <li className="mb-2 text-black/50 hover:text-primary w-fit">
-                <Link href="#">
-                  Our Team
-                </Link>
-              </li>
-              <li className="mb-2 text-black/50 hover:text-primary w-fit">
-                <Link href="#">
-                  career
-                </Link>
-              </li>
-              <li className="mb-2 text-black/50 hover:text-primary w-fit">
-                <Link href="#">
-                  Services
-                </Link>
-              </li>
-              <li className="mb-2 text-black/50 hover:text-primary w-fit">
-                <Link href="#">
+                <Link href="/contact">
                   Contact
                 </Link>
               </li>
@@ -79,21 +73,21 @@ const footer = () => {
                 icon="tabler:brand-google-maps"
                 className="text-primary text-3xl inline-block me-2"
               />
-              <h5 className="text-lg text-black/60">925 Filbert Street Pennsylvania 18072</h5>
+              <h5 className="text-lg text-black/60">Jl. Hayam Wuruk No. 12</h5>
             </div>
-            <div className="flex gap-2 mt-10">
+            <div className="flex gap-2 mt-5">
               <Icon
                 icon="tabler:phone"
                 className="text-primary text-3xl inline-block me-2"
               />
-              <h5 className="text-lg text-black/60">+45 3411-4411</h5>
+              <h5 className="text-lg text-black/60">+628234567890</h5>
             </div>
-            <div className="flex gap-2 mt-10">
+            <div className="flex gap-2 mt-5">
               <Icon
-                icon="tabler:folder"
+                icon="tabler:mail"
                 className="text-primary text-3xl inline-block me-2"
               />
-              <h5 className="text-lg text-black/60">info@gmail.com</h5>
+              <h5 className="text-lg text-black/60">info@nexcardify.com</h5>
             </div>
           </div>
         </div>

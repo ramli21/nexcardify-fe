@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Form, Input, Button, Typography, Card, message } from 'antd'
 import { ForgotPayload } from '@/services/types'
-import { Api } from '../api/api'
+import { Api } from '../../../api/api'
 import Image from 'next/image'
 import Link from 'next/link'
 

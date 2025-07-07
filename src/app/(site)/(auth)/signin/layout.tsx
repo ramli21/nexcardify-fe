@@ -7,11 +7,11 @@ interface IProps {
   children: React.ReactNode
 }
 
-export default async function LoginLayout({ children }: IProps) {
+export default async function SigninLayout({ children }: IProps) {
   return (
     <>
       <Header />
-      <Layout className="">
+      <Layout className="pt-20">
         <Content className="container mx-auto lg:max-w-screen-xl md:max-w-screen-md">
           <main>{children}</main>
         </Content>
