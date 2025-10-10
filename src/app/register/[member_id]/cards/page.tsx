@@ -56,6 +56,8 @@ const Page = () => {
   }, [])
 
   const onSelectCard = (card: any) => {
+    console.log(card)
+
     setSelected(card)
     onReset(card)
   }
@@ -71,9 +73,9 @@ const Page = () => {
 
     let image = new Image(context.canvas.width, context.canvas.height)
     image.crossOrigin = 'anonymous'
-    // image.src = data?.front_image
-    image.src =
-      'https://res.cloudinary.com/dhjudl4yh/image/upload/v1751160576/5_rsbyhk.png'
+    image.src = data?.front_image
+    // image.src =
+    //   'https://res.cloudinary.com/kbas/image/upload/v1753757765/front_image_1751976712_cldd6w.png'
 
     image.onload = () => {
       context?.drawImage(
@@ -88,6 +90,7 @@ const Page = () => {
         for (const key in data.position) {
           if (cardKeys.includes(key)) {
             let rect = JSON.parse(data.position[key])
+            let is_text_align: any = 'left'
             // console.log(typeof rect === 'object', rect)
 
             if (typeof rect === 'object') {
@@ -97,6 +100,10 @@ const Page = () => {
                 context.font =
                   font_style['fontsize'] + 'px ' + font_style['fontfamily']
                 context.fillStyle = font_style['fontcolor']
+                is_text_align = font_style.textalign
+                  ? font_style.textalign
+                  : 'left'
+                context.textAlign = is_text_align
               } else {
                 context.font = '16px Arial'
                 context.fillStyle = '#ff6b81'
@@ -115,17 +122,23 @@ const Page = () => {
                 image.onload = () => {
                   context?.drawImage(
                     image,
-                    rect?.x + 10,
-                    rect?.y + 20,
+                    rect?.x,
+                    rect?.y,
                     rect?.width,
                     rect?.width
                   )
                 }
               } else {
                 if (key === 'name') {
+                  let x_position =
+                    is_text_align === 'left'
+                      ? rect?.x + 10
+                      : is_text_align === 'center'
+                      ? rect?.x + rect?.width / 2
+                      : rect?.x + rect?.width
                   context.fillText(
                     member['full_name'],
-                    rect?.x + 10,
+                    x_position,
                     rect?.y + 20
                   )
                 } else if (key === 'address') {
@@ -133,11 +146,26 @@ const Page = () => {
 
                   const lineHeight = 35
                   const y = rect?.y + 20
+
+                  let x_position =
+                    is_text_align === 'left'
+                      ? rect?.x + 10
+                      : is_text_align === 'center'
+                      ? rect?.x + rect?.width / 2
+                      : rect?.x + rect?.width
+
                   for (let i = 0; i < lines.length; i++) {
-                    context.fillText(lines[i], rect?.x + 10, y + i * lineHeight)
+                    context.fillText(lines[i], x_position, y + i * lineHeight)
                   }
                 } else {
-                  context.fillText(member[key], rect?.x + 10, rect?.y + 20)
+                  let x_position =
+                    is_text_align === 'left'
+                      ? rect?.x + 10
+                      : is_text_align === 'center'
+                      ? rect?.x + rect?.width / 2
+                      : rect?.x + rect?.width
+
+                  context.fillText(member[key], x_position, rect?.y + 20)
                 }
               }
             }
@@ -191,8 +219,8 @@ const Page = () => {
               <Col span={24}>
                 <canvas
                   ref={canvasRef}
-                  width={1050}
-                  height={600}
+                  width={840}
+                  height={480}
                   style={{
                     border: '1px solid rgb(150, 150, 150)',
                     background: 'transparent',
